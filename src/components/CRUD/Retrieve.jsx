@@ -68,24 +68,19 @@ export default function Retrieve() {
         } catch(error) {
             console.error("Error:", error);
         }
-        updatingActive = false;
     }
 
     const onDeleteButton = (id) => {
         //Add the function of invoke rust where the id is given and it deletes it
     }
 
-    const onCheckedHandler = (event, completed) => {
-        if (completed) {
-            event.checked = false;
-            completed = false;
-            console.log("Checkbox: false");
-        }
-        else {
-            event.checked = true;
-            completed = true;
-            console.log("Checkbox: true");
-        }
+    const onCheckedHandler = (id) => {
+        setTasks((prevTasks) =>
+            prevTasks.map((task) =>
+                task.id === id ? { ...task, completed: !task.completed } : task
+            )
+        );
+
     }
 
 
@@ -96,9 +91,9 @@ export default function Retrieve() {
                     <strong>{task.title}</strong>
                     {task.description}
                     {task.completed ? "Yes" : "No"}
-                    <input type="checkbox" checked={task.completed} onChange={(event) => onCheckedHandler(event, task.completed)}/>
-                    <button value="update" onClick={() => configureTask(task.id, task.title, task.description, task.completed)}/>
-                    <button value="delete"/>
+                    <input type="checkbox" checked={task.completed} onChange={() => onCheckedHandler(task.id)}/>
+                    <button onClick={() => configureTask(task.id, task.title, task.description, task.completed)}>update</button>
+                    <button onClick={() => onDeleteButton(task.id)}>Delete</button>
                 </li>
             ))
             }
