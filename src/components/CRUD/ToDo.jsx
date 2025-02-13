@@ -1,8 +1,8 @@
-import { invoke } from "@tauri-apps/api/core";
+import {invoke} from "@tauri-apps/api/core";
 import {useEffect, useState} from "react";
 
 export default function ToDo() {
-    const[tasks, setTasks] = useState([]);
+    const [tasks, setTasks] = useState([]);
 
     async function retrieve_tasks() {
         try {
@@ -12,6 +12,48 @@ export default function ToDo() {
         } catch (error) {
             console.error("Error: ", error);
         }
+    }
+
+    async function create_task(title, description, completed) {
+        try {
+            const result = await invoke("create_task",
+                {
+                    title: title,
+                    description: description,
+                    completed: completed,
+                });
+        } catch(error) {
+            console.error("Error: ", Error);
+        }
+
+    }
+
+    const onCreateButton = () => {
+        const array = [1, 2];
+        const bodyElement = document.getElementsByTagName("body")[0];
+        const createDiv = document.createElement("div");
+        createDiv.id = "createDiv";
+
+        array.forEach((item, index) => {
+            const createInputText = document.createElement("input");
+            createInputText.id = `createInputText${index + 1}`;
+            createDiv.appendChild(createInputText);
+        });
+        const createInputCheckbox = document.createElement("input");
+        createInputCheckbox.type = "checkbox";
+        createInputCheckbox.onchange = onCheckedHandler; //Check the logic for this
+        const createTaskCreaterButton = document.createElement("button");
+        createTaskCreaterButton.textContent = "Create";
+        createDiv.appendChild(createInputCheckbox);
+        createDiv.appendChild(createTaskCreaterButton);
+        bodyElement.appendChild(createDiv);
+        const title = document.getElementById("createInputText1");
+        const description = document.getElementById("createInputText2");
+        let completed = 0;
+        if (createInputCheckbox.checked === true) {
+            completed = 1;
+        }
+        createTaskCreaterButton.onclick = () => create_task(title.value, description.value, completed);
     }
 
     const onUpdateButton = (id, title, description, completed) => {
@@ -24,12 +66,13 @@ export default function ToDo() {
         const body = document.getElementsByTagName("body")[0];
         const createDiv = document.createElement("div");
         array.forEach((item, index) => {
-            const createInputText = document.createElement("input");
-            createInputText.type = "text";
-            createInputText.value = item;
-            createInputText.id = `updateInput${index + 1}`;
-            createDiv.appendChild(createInputText);
-            console.log(createInputText.id);}
+                const createInputText = document.createElement("input");
+                createInputText.type = "text";
+                createInputText.value = item;
+                createInputText.id = `updateInput${index + 1}`;
+                createDiv.appendChild(createInputText);
+                console.log(createInputText.id);
+            }
         )
         const createSaveButton = document.createElement("button");
         createSaveButton.textContent = "Save";
@@ -51,7 +94,7 @@ export default function ToDo() {
     }, []);
 
 
-    async function onSaveButton(id, completed){
+    async function onSaveButton(id, completed) {
         // The whole thing needs to dissapear when done and also it should only allow one edit at a time and it should refresh the actaull tasks and also make only the edit page appear and then when clicked on the side dissapear and then reapear the other sutff so maybe just reload then if possible.
 
         const title = document.getElementById("updateInput1");
@@ -60,15 +103,16 @@ export default function ToDo() {
         const deleteButton = document.getElementById("deleteButton");
         try {
             const result = await invoke("update_task", {
-            id: id,
-            title: title.value,
-            description: description.value,
-            completed: completed});
+                id: id,
+                title: title.value,
+                description: description.value,
+                completed: completed
+            });
             title.remove();
             description.remove();
             saveButton.remove();
             deleteButton.remove();
-        } catch(error) {
+        } catch (error) {
             console.error("Error:", error);
         }
     }
@@ -83,21 +127,24 @@ export default function ToDo() {
     const onCheckedHandler = (id) => {
         setTasks((prevTasks) =>
             prevTasks.map((task) =>
-                task.id === id ? { ...task, completed: !task.completed } : task
+                task.id === id ? {...task, completed: !task.completed} : task
             )
         );
     }
 
 
-    return(
+    return (
         <div>
+            <button onClick={() => onCreateButton()}>Create</button>
             <ul> {tasks.map((task, index) => (
                 <li className="toDoItem" /*Style needs to still be adjusted */ key={index}>
                     <strong>{task.title}</strong>
                     {task.description}
                     {task.completed ? "Yes" : "No"}
                     <input type="checkbox" checked={task.completed} onChange={() => onCheckedHandler(task.id)}/>
-                    <button onClick={() => onUpdateButton(task.id, task.title, task.description, task.completed)}>Update</button>
+                    <button
+                        onClick={() => onUpdateButton(task.id, task.title, task.description, task.completed)}>Update
+                    </button>
                     <button onClick={() => onDeleteButton(task.id)}>Delete</button>
                 </li>
             ))

@@ -35,10 +35,26 @@ fn get_tasks() -> Vec<Task> {
     tasks
 }
 
+
+#[tauri::command]
+fn create_task(title: String, description: String, completed: i8) -> Result<(), String> {
+    let pool = get_connection();
+    let mut conn = pool.get_conn().map_err(|e| e.to_string())?;
+    conn.exec_drop(
+        "INSERT INTO tasks (title, description, completed) VALUES (:title, :description, :completed)",
+        params! {
+            "title" => title,
+            "description" => description,
+            "completed" => completed,
+        },
+    ).map_err(|e| e.to_string())?;
+    Ok(())
+}
+
 #[tauri::command]
 fn update_task(id: i32, title: String, description: String, completed: i8) -> Result<(), String> {
     let pool = get_connection();
-    let mut conn = pool.get_conn().unwrap();
+    let mut conn = pool.get_conn().map_err(|e| e.to_string())?;
     conn.exec_drop(
         "UPDATE tasks SET title = :title, description = :description, completed = :completed WHERE id = :id",
         params! {
@@ -72,7 +88,7 @@ fn greet(name: &str) -> String {
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![greet, get_tasks, update_task, delete_task])
+        .invoke_handler(tauri::generate_handler![greet, get_tasks, create_task, update_task, delete_task])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
