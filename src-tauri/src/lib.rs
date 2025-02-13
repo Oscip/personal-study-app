@@ -47,7 +47,20 @@ fn update_task(id: i32, title: String, description: String, completed: i8) -> Re
             "description" => description,
             "completed" => completed,
         },
-    ).map_err(|e| e.to_string());
+    ).map_err(|e| e.to_string())?;
+    Ok(())
+}
+
+#[tauri::command]
+fn delete_task(id: i32) -> Result<(), String> {
+    let pool = get_connection();
+    let mut conn = pool.get_conn().map_err(|e| e.to_string())?;
+    conn.exec_drop(
+        "DELETE FROM tasks WHERE id = :id",
+        params! {
+            "id" => id,
+        },
+    ).map_err(|e| e.to_string())?;
     Ok(())
 }
 
@@ -56,11 +69,10 @@ fn greet(name: &str) -> String {
     format!("Hello, {}! You've been greeted from Rust!", name)
 }
 
-#[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![greet, get_tasks, update_task])
+        .invoke_handler(tauri::generate_handler![greet, get_tasks, update_task, delete_task])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

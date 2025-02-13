@@ -114,3 +114,9 @@ button {
     background-color: #0f0f0f69;
   }
 }
+
+.toDoItem {
+  list-style-type: none;
+  display: flex;
+}
+

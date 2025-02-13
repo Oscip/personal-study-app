@@ -1,7 +1,7 @@
 import { invoke } from "@tauri-apps/api/core";
 import {useEffect, useState} from "react";
 
-export default function Retrieve() {
+export default function ToDo() {
     const[tasks, setTasks] = useState([]);
 
     async function retrieve_tasks() {
@@ -14,7 +14,7 @@ export default function Retrieve() {
         }
     }
 
-    const configureTask = (id, title, description, completed) => {
+    const onUpdateButton = (id, title, description, completed) => {
         console.log("onclick activated");
         console.log(id);
         console.log(title);
@@ -59,8 +59,11 @@ export default function Retrieve() {
         const saveButton = document.getElementById("saveButton");
         const deleteButton = document.getElementById("deleteButton");
         try {
-            const result = await invoke(`update_task(${id}, ${title.value}, ${description.value}, ${completed})`);
-            console.log(result);
+            const result = await invoke("update_task", {
+            id: id,
+            title: title.value,
+            description: description.value,
+            completed: completed});
             title.remove();
             description.remove();
             saveButton.remove();
@@ -70,7 +73,10 @@ export default function Retrieve() {
         }
     }
 
-    const onDeleteButton = (id) => {
+    async function onDeleteButton(id) {
+        const result = await invoke("delete_task", {
+            id: id,
+        });
         //Add the function of invoke rust where the id is given and it deletes it
     }
 
@@ -80,19 +86,18 @@ export default function Retrieve() {
                 task.id === id ? { ...task, completed: !task.completed } : task
             )
         );
-
     }
 
 
     return(
         <div>
             <ul> {tasks.map((task, index) => (
-                <li key={index}>
+                <li className="toDoItem" /*Style needs to still be adjusted */ key={index}>
                     <strong>{task.title}</strong>
                     {task.description}
                     {task.completed ? "Yes" : "No"}
                     <input type="checkbox" checked={task.completed} onChange={() => onCheckedHandler(task.id)}/>
-                    <button onClick={() => configureTask(task.id, task.title, task.description, task.completed)}>update</button>
+                    <button onClick={() => onUpdateButton(task.id, task.title, task.description, task.completed)}>Update</button>
                     <button onClick={() => onDeleteButton(task.id)}>Delete</button>
                 </li>
             ))
