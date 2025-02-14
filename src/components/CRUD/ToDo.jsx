@@ -54,6 +54,16 @@ export default function ToDo() {
 
     // Create Function for delete for better clarity
 
+    async function delete_task(id) {
+        try {
+            await invoke("delete_task", {
+                id: id,
+            });
+        } catch(error) {
+            console.error("Error: ", error);
+        }
+    }
+
     const closeModal = () => {
         const container = document.getElementsByClassName("container")[0];
         const modalFrame = document.getElementById("createModalFrame");
@@ -133,13 +143,9 @@ export default function ToDo() {
         retrieve_tasks();
     }, []);
 
-
-    async function onDeleteButton(id) {
-        await invoke("delete_task", {
-            id: id,
-        });
+    const onDeleteButton = (id) => {
+        delete_task(id);
         retrieve_tasks();
-
     }
 
     const onCheckedHandler = (id) => {
