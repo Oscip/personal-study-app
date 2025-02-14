@@ -4,6 +4,18 @@ import {useEffect, useState} from "react";
 export default function ToDo() {
     const [tasks, setTasks] = useState([]);
 
+    const modal = () => {
+        const toDoDiv = document.getElementById("toDoDiv");
+        toDoDiv.style.display = "none";
+        const container = document.getElementsByClassName("container")[0];
+        const createModalFrame = document.createElement("div");
+        createModalFrame.id = "createModalFrame";
+        const createModalVisible = document.createElement("div");
+        createModalVisible.id = "createModalVisible";
+        createModalFrame.appendChild(createModalVisible);
+        container.appendChild(createModalFrame);
+    }
+
     async function retrieve_tasks() {
         try {
             const result = await invoke("get_tasks");
@@ -16,61 +28,90 @@ export default function ToDo() {
 
     async function create_task(title, description, completed) {
         try {
-            const result = await invoke("create_task",
+            await invoke("create_task",
                 {
                     title: title,
                     description: description,
                     completed: completed,
                 });
-        } catch(error) {
+        } catch (error) {
             console.error("Error: ", Error);
         }
+    }
 
+    async function update_task(id, title, description, completed){
+        try {
+            await invoke("update_task", {
+                id: id,
+                title: title,
+                description: description,
+                completed: completed
+            });
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+
+    // Create Function for delete for better clarity
+
+    const closeModal = () => {
+        const container = document.getElementsByClassName("container")[0];
+        const modalFrame = document.getElementById("createModalFrame");
+        const toDoDiv = document.getElementById("toDoDiv");
+        container.removeChild(modalFrame);
+        toDoDiv.style.display = "block";
+    }
+
+    const createModal = (title, description, completed) => {
+        create_task(title, description, completed);
+        closeModal();
+        retrieve_tasks();
     }
 
     const onCreateButton = () => {
+        modal();
         const array = [1, 2];
-        const bodyElement = document.getElementsByTagName("body")[0];
-        const createDiv = document.createElement("div");
-        createDiv.id = "createDiv";
+        const createModalVisible = document.getElementById("createModalVisible");
 
         array.forEach((item, index) => {
             const createInputText = document.createElement("input");
             createInputText.id = `createInputText${index + 1}`;
-            createDiv.appendChild(createInputText);
+            createModalVisible.appendChild(createInputText);
         });
         const createInputCheckbox = document.createElement("input");
         createInputCheckbox.type = "checkbox";
         createInputCheckbox.onchange = onCheckedHandler; //Check the logic for this
         const createTaskCreaterButton = document.createElement("button");
         createTaskCreaterButton.textContent = "Create";
-        createDiv.appendChild(createInputCheckbox);
-        createDiv.appendChild(createTaskCreaterButton);
-        bodyElement.appendChild(createDiv);
+        createModalVisible.appendChild(createInputCheckbox);
+        createModalVisible.appendChild(createTaskCreaterButton);
         const title = document.getElementById("createInputText1");
         const description = document.getElementById("createInputText2");
         let completed = 0;
         if (createInputCheckbox.checked === true) {
             completed = 1;
         }
-        createTaskCreaterButton.onclick = () => create_task(title.value, description.value, completed);
+        createTaskCreaterButton.onclick = () => createModal(title.value, description.value, completed);
+    }
+
+    const updateModal = (id, completed) => {
+        const titleInput = document.getElementById("updateInput1");
+        const descriptionInput = document.getElementById("updateInput2");
+        update_task(id, titleInput.value, descriptionInput.value, completed);
+        closeModal();
+        retrieve_tasks();
     }
 
     const onUpdateButton = (id, title, description, completed) => {
-        console.log("onclick activated");
-        console.log(id);
-        console.log(title);
-        console.log(description);
-        console.log(completed);
+        modal();
         const array = [title, description];
-        const body = document.getElementsByTagName("body")[0];
-        const createDiv = document.createElement("div");
+        const createModalVisible = document.getElementById("createModalVisible");
         array.forEach((item, index) => {
                 const createInputText = document.createElement("input");
                 createInputText.type = "text";
                 createInputText.value = item;
                 createInputText.id = `updateInput${index + 1}`;
-                createDiv.appendChild(createInputText);
+                createModalVisible.appendChild(createInputText);
                 console.log(createInputText.id);
             }
         )
@@ -78,15 +119,14 @@ export default function ToDo() {
         createSaveButton.textContent = "Save";
         createSaveButton.style.backgroundColor = "blue";
         createSaveButton.id = "saveButton";
-        createSaveButton.onclick = () => onSaveButton(id, completed);
-        createDiv.appendChild(createSaveButton);
+        createSaveButton.onclick = () => updateModal(id, completed);
+        createModalVisible.appendChild(createSaveButton);
         const createDeleteButton = document.createElement("button");
         createDeleteButton.textContent = "Delete";
         createDeleteButton.style.backgroundColor = "red";
         createDeleteButton.id = "deleteButton";
         createDeleteButton.onclick = () => onDeleteButton(id);
-        createDiv.appendChild(createDeleteButton);
-        body.appendChild(createDiv);
+        createModalVisible.appendChild(createDeleteButton);
     }
 
     useEffect(() => {
@@ -94,34 +134,12 @@ export default function ToDo() {
     }, []);
 
 
-    async function onSaveButton(id, completed) {
-        // The whole thing needs to dissapear when done and also it should only allow one edit at a time and it should refresh the actaull tasks and also make only the edit page appear and then when clicked on the side dissapear and then reapear the other sutff so maybe just reload then if possible.
-
-        const title = document.getElementById("updateInput1");
-        const description = document.getElementById("updateInput2");
-        const saveButton = document.getElementById("saveButton");
-        const deleteButton = document.getElementById("deleteButton");
-        try {
-            const result = await invoke("update_task", {
-                id: id,
-                title: title.value,
-                description: description.value,
-                completed: completed
-            });
-            title.remove();
-            description.remove();
-            saveButton.remove();
-            deleteButton.remove();
-        } catch (error) {
-            console.error("Error:", error);
-        }
-    }
-
     async function onDeleteButton(id) {
-        const result = await invoke("delete_task", {
+        await invoke("delete_task", {
             id: id,
         });
-        //Add the function of invoke rust where the id is given and it deletes it
+        retrieve_tasks();
+
     }
 
     const onCheckedHandler = (id) => {
@@ -134,13 +152,12 @@ export default function ToDo() {
 
 
     return (
-        <div>
+        <div id="toDoDiv">
             <button onClick={() => onCreateButton()}>Create</button>
             <ul> {tasks.map((task, index) => (
                 <li className="toDoItem" /*Style needs to still be adjusted */ key={index}>
                     <strong>{task.title}</strong>
                     {task.description}
-                    {task.completed ? "Yes" : "No"}
                     <input type="checkbox" checked={task.completed} onChange={() => onCheckedHandler(task.id)}/>
                     <button
                         onClick={() => onUpdateButton(task.id, task.title, task.description, task.completed)}>Update
