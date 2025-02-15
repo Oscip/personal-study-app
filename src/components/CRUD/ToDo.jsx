@@ -10,9 +10,16 @@ export default function ToDo() {
         const container = document.getElementsByClassName("container")[0];
         const createModalFrame = document.createElement("div");
         createModalFrame.id = "createModalFrame";
-        const createModalVisible = document.createElement("div");
-        createModalVisible.id = "createModalVisible";
-        createModalFrame.appendChild(createModalVisible);
+        createModalFrame.className = "modalFrame";
+        const createModalUI = document.createElement("div");
+        createModalUI.id = "createModalUI";
+        createModalUI.className = "modalUI";
+        const closeButton = document.createElement("button");
+        closeButton.textContent = "X";
+        closeButton.className = "closeButton";
+        closeButton.onclick = closeModal;
+        createModalFrame.appendChild(createModalUI);
+        createModalUI.appendChild(closeButton);
         container.appendChild(createModalFrame);
     }
 
@@ -80,21 +87,31 @@ export default function ToDo() {
 
     const onCreateButton = () => {
         modal();
-        const array = [1, 2];
-        const createModalVisible = document.getElementById("createModalVisible");
+        const array = ["Title", "Description"];
+        const createModalUI = document.getElementById("createModalUI");
 
         array.forEach((item, index) => {
+            const formDiv = document.createElement("div");
+            formDiv.className = "formDiv";
             const createInputText = document.createElement("input");
+            createInputText.type = "text";
+            createInputText.placeholder = `${item}`;
             createInputText.id = `createInputText${index + 1}`;
-            createModalVisible.appendChild(createInputText);
+            const createLabel = document.createElement("label");
+            createLabel.textContent = `${item}`;
+            createLabel.htmlFor = `${item}`;
+            createInputText.name = `${item}`;
+            formDiv.appendChild(createInputText);
+            formDiv.appendChild(createLabel);
+            createModalUI.appendChild(formDiv);
         });
         const createInputCheckbox = document.createElement("input");
         createInputCheckbox.type = "checkbox";
         createInputCheckbox.onchange = onCheckedHandler; //Check the logic for this
         const createTaskCreaterButton = document.createElement("button");
         createTaskCreaterButton.textContent = "Create";
-        createModalVisible.appendChild(createInputCheckbox);
-        createModalVisible.appendChild(createTaskCreaterButton);
+        createModalUI.appendChild(createInputCheckbox);
+        createModalUI.appendChild(createTaskCreaterButton);
         const title = document.getElementById("createInputText1");
         const description = document.getElementById("createInputText2");
         let completed = 0;
@@ -115,13 +132,18 @@ export default function ToDo() {
     const onUpdateButton = (id, title, description, completed) => {
         modal();
         const array = [title, description];
-        const createModalVisible = document.getElementById("createModalVisible");
+        const createModalUI = document.getElementById("createModalUI");
         array.forEach((item, index) => {
+                const createLabel = document.createElement("label");
+                createLabel.textContent = `${item}`;
+                createLabel.htmlFor = `${item}`;
+                createModalUI.appendChild(createLabel);
                 const createInputText = document.createElement("input");
                 createInputText.type = "text";
                 createInputText.value = item;
                 createInputText.id = `updateInput${index + 1}`;
-                createModalVisible.appendChild(createInputText);
+                createInputText.name = `${item}`;
+                createModalUI.appendChild(createInputText);
                 console.log(createInputText.id);
             }
         )
@@ -130,13 +152,13 @@ export default function ToDo() {
         createSaveButton.style.backgroundColor = "blue";
         createSaveButton.id = "saveButton";
         createSaveButton.onclick = () => updateModal(id, completed);
-        createModalVisible.appendChild(createSaveButton);
+        createModalUI.appendChild(createSaveButton);
         const createDeleteButton = document.createElement("button");
         createDeleteButton.textContent = "Delete";
         createDeleteButton.style.backgroundColor = "red";
         createDeleteButton.id = "deleteButton";
         createDeleteButton.onclick = () => onDeleteButton(id);
-        createModalVisible.appendChild(createDeleteButton);
+        createModalUI.appendChild(createDeleteButton);
     }
 
     useEffect(() => {

@@ -1,8 +1,9 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 :root {
+  --primary: #11998e;
+  --secondary: #38ef7d;
+  --white: #fff;
+  --gray: #9b9b9b;
+  --black: #000000;
 }
 
 .toDoItem {
@@ -10,3 +11,100 @@
   display: flex;
 }
 
+.modalFrame {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalUI {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  width: 40%;
+  min-width: 300px;
+  min-height: 300px;
+  text-align: center;
+  position: relative;
+}
+
+.closeButton {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  border: none;
+  background: transparent;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.formDiv {
+  position: relative;
+  padding: 15px 0 0;
+  margin-top: 10px;
+  width: 50%;
+}
+
+input[type="text"] {
+  font-family: inherit;
+  width: 100%;
+  border: 0;
+  border-bottom: 2px solid var(--gray);
+  outline: 0;
+  font-size: 1.3rem;
+  color: var(--black);
+  padding: 7px 0;
+  background: transparent;
+  transition: border-color 0.2s;
+
+  &::placeholder {
+    color: transparent;
+  }
+
+  &:placeholder-shown ~ label {
+    font-size: 1.3rem;
+    cursor: text;
+    top: 20px;
+  }
+}
+
+label {
+  position: absolute;
+  top: 0;
+  display: block;
+  transition: 0.2s;
+  font-size: 1rem;
+  color: var(--gray);
+}
+
+input[type="text"]:focus {
+  ~ label {
+    position: absolute;
+    top: 0;
+    display: block;
+    transition: 0.2s;
+    font-size: 1rem;
+    color: var(--black);
+    font-weight:700;
+  }
+  padding-bottom: 6px;
+  font-weight: 700;
+  border-width: 3px;
+  border-image: linear-gradient(to right, var(--primary), var(--secondary));
+  border-image-slice: 1;
+}
+/* reset input */
+input[type="text"]{
+  &:required,&:invalid { box-shadow:none; }
+}
+
+
+/* Change so that it doesn't affect every input and label taht exists*/
