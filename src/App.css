@@ -1,15 +1,36 @@
 :root {
   --primary: #11998e;
   --secondary: #38ef7d;
-  --white: #fff;
+  --accent: #ff9f1c;
+  --danger: #ff4f4f;
+  --success: #28a745;
+  --warning: #ffcc00;
+  --info: #17a2b8;
+  --white: #ffffff;
   --gray: #9b9b9b;
   --black: #000000;
+  --background: #f5f5f5;
 }
 
 .toDoItem {
   list-style-type: none;
   display: flex;
+  justify-content: space-between;
+  border: var(--black) 1px solid;
+  border-radius: 5px;
+  margin: 1%;
 }
+
+.toDoItem:hover {
+  transform: scale(1.02);
+}
+/* After certain thing make it adjustable so use flex-direction: column; for better useability */
+
+.toDoText {
+  display: flex;
+  flex-direction: column;
+}
+
 
 .modalFrame {
   position: fixed;
@@ -86,6 +107,7 @@
   transition: 0.2s;
   font-size: 1rem;
   color: var(--gray);
+  pointer-events: none;
 }
 
 .modalInput:focus {
@@ -147,5 +169,21 @@
 .smoothButton:hover {
   border-color: #666666;
   background: #292929;
+}
+
+.createButton {
+  background-color: var(--black);
+}
+
+.updateButton {
+    background-color: var(--gray);
+}
+
+.deleteButton {
+    background-color: var(--danger);
+}
+
+.completeButton {
+    background-color: var(--danger);
 }
 

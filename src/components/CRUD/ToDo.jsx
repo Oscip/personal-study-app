@@ -46,7 +46,7 @@ export default function ToDo() {
         }
     }
 
-    async function update_task(id, title, description, completed){
+    async function update_task(id, title, description, completed) {
         try {
             await invoke("update_task", {
                 id: id,
@@ -59,14 +59,13 @@ export default function ToDo() {
         }
     }
 
-    // Create Function for delete for better clarity
 
     async function delete_task(id) {
         try {
             await invoke("delete_task", {
                 id: id,
             });
-        } catch(error) {
+        } catch (error) {
             console.error("Error: ", error);
         }
     }
@@ -85,13 +84,12 @@ export default function ToDo() {
         if (completeButton.textContent === "Completed") {
             completed = 1;
             console.log("it worked");
-        }
-        else if (completeButton.textContent === "Uncompleted") {
+        } else if (completeButton.textContent === "Uncompleted") {
             completed = 0;
         }
         create_task(title, description, completed);
-        closeModal();
         retrieve_tasks();
+        closeModal();
     }
 
     const onCreateButton = () => {
@@ -117,7 +115,7 @@ export default function ToDo() {
         });
         const completeButton = document.createElement("button");
         completeButton.id = "completeButton";
-        completeButton.className = "smoothButton";
+        completeButton.className = "smoothButton completeButton";
         completeButton.textContent = "Uncompleted";
         completeButton.onclick = () => onClickCompleteButton();
         const createTaskCreaterButton = document.createElement("button");
@@ -135,25 +133,28 @@ export default function ToDo() {
         const titleInput = document.getElementById("updateInput1");
         const descriptionInput = document.getElementById("updateInput2");
         update_task(id, titleInput.value, descriptionInput.value, completed);
-        closeModal();
         retrieve_tasks();
+        closeModal();
     }
 
     const onUpdateButton = (id, title, description, completed) => {
         modal();
-        const array = [title, description];
+        const arrayValue = [title, description];
+        const arrayHelp = ["Title", "Description"];
         const createModalUI = document.getElementById("createModalUI");
-        array.forEach((item, index) => {
+        arrayValue.forEach((item, index) => {
                 const formDiv = document.createElement("div");
                 formDiv.className = "formDiv";
                 const createLabel = document.createElement("label");
-                createLabel.textContent = `${item}`;
-                createLabel.htmlFor = `${item}`;
+                createLabel.textContent = `${arrayHelp[index]}`;
+                createLabel.htmlFor = `updateInput${index + 1}`;
+                createLabel.className = "modalLabel";
                 const createInputText = document.createElement("input");
                 createInputText.type = "text";
+                createInputText.className = "modalInput";
                 createInputText.value = item;
                 createInputText.id = `updateInput${index + 1}`;
-                createInputText.name = `${item}`;
+                createInputText.name = `updateInput${index + 1}`;
                 formDiv.appendChild(createLabel);
                 formDiv.appendChild(createInputText);
                 createModalUI.appendChild(formDiv);
@@ -181,6 +182,7 @@ export default function ToDo() {
     const onDeleteButton = (id) => {
         delete_task(id);
         retrieve_tasks();
+        closeModal();
     }
 
     const onCheckedHandler = (id) => {
@@ -194,30 +196,38 @@ export default function ToDo() {
     const onClickCompleteButton = () => {
         const completeButton = document.getElementById("completeButton");
         if (completeButton.textContent === "Uncompleted") {
+            completeButton.style.backgroundColor = "var(--success)";
             completeButton.textContent = "Completed";
         } else {
             completeButton.textContent = "Uncompleted";
+            completeButton.style.backgroundColor = "var(--danger)";
         }
     }
 
 
     return (
         <div id="toDoDiv">
-            <button  className="smoothButton createButton" onClick={() => onCreateButton()}>Create</button>
             <ul> {tasks.map((task, index) => (
                 <li className="toDoItem" /*Style needs to still be adjusted */ key={index}>
-                    <strong>{task.title}</strong>
-                    {task.description}
-                    <input type="checkbox" checked={task.completed} onChange={() => onCheckedHandler(task.id)}/>
-                    <button className="smoothButton updateButton"onClick={() => onUpdateButton(task.id, task.title, task.description, task.completed)}>Update
-                    </button>
-                    <button className="smoothButton deleteButton" onClick={() => onDeleteButton(task.id)}>Delete</button>
-                </li>
-            ))
-            }
+                    <div className="toDoText">
+                        <strong>{task.title}</strong>
+                        {task.description}
+                    </div>
 
+                    <input type="checkbox" checked={task.completed} onChange={() => onCheckedHandler(task.id)}/>
+                    <div className="toDoButtons">
+                        <button className="smoothButton updateButton"
+                                onClick={() => onUpdateButton(task.id, task.title, task.description, task.completed)}>Update
+                        </button>
+                        <button className="smoothButton deleteButton" onClick={() => onDeleteButton(task.id)}>Delete
+                        </button>
+                    </div>
+                </li>
+                /* More Factors should be added  */
+
+            ))}
             </ul>
-            <h1>hello</h1>
+            <button className="smoothButton createButton" onClick={() => onCreateButton()}>Create</button>
         </div>
     )
 }
