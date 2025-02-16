@@ -185,12 +185,21 @@ export default function ToDo() {
         closeModal();
     }
 
-    const onCheckedHandler = (id) => {
-        setTasks((prevTasks) =>
-            prevTasks.map((task) =>
-                task.id === id ? {...task, completed: !task.completed} : task
-            )
-        );
+    const onCheckedHandler = (id, title, description, event) => {
+        let completed = 0;
+        console.log(event.target.checked);
+        if (event.target.checked) {
+            completed = 1;
+        }
+        else if (!event.target.checked) {
+            completed = 0;
+        }
+        console.log(id);
+        console.log(title);
+        console.log(description);
+        console.log(completed);
+        update_task(id, title, description, completed);
+        retrieve_tasks();
     }
 
     const onClickCompleteButton = () => {
@@ -214,7 +223,7 @@ export default function ToDo() {
                         {task.description}
                     </div>
 
-                    <input type="checkbox" checked={task.completed} onChange={() => onCheckedHandler(task.id)}/>
+                    <input type="checkbox" checked={task.completed} onChange={(event) => onCheckedHandler(task.id, task.title, task.description, event)}/>
                     <div className="toDoButtons">
                         <button className="smoothButton updateButton"
                                 onClick={() => onUpdateButton(task.id, task.title, task.description, task.completed)}>Update
