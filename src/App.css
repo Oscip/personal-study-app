@@ -25,12 +25,15 @@
 }
 
 .modalUI {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
   background-color: #fff;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
   width: 40%;
-  min-width: 300px;
   min-height: 300px;
   text-align: center;
   position: relative;
@@ -53,7 +56,7 @@
   width: 50%;
 }
 
-input[type="text"] {
+.modalInput {
   font-family: inherit;
   width: 100%;
   border: 0;
@@ -69,14 +72,14 @@ input[type="text"] {
     color: transparent;
   }
 
-  &:placeholder-shown ~ label {
+  &:placeholder-shown ~ .modalLabel {
     font-size: 1.3rem;
     cursor: text;
     top: 20px;
   }
 }
 
-label {
+.modalLabel {
   position: absolute;
   top: 0;
   display: block;
@@ -85,8 +88,8 @@ label {
   color: var(--gray);
 }
 
-input[type="text"]:focus {
-  ~ label {
+.modalInput:focus {
+  ~ .modalLabel {
     position: absolute;
     top: 0;
     display: block;
@@ -102,9 +105,47 @@ input[type="text"]:focus {
   border-image-slice: 1;
 }
 /* reset input */
-input[type="text"]{
+.modalInput{
   &:required,&:invalid { box-shadow:none; }
 }
 
+.smoothButton {
+  padding: 15px 30px;
+  border: 2px solid #2c2c2c;
+  background-color: #1a1a1a;
+  color: #ffffff;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 30px;
+  transition: all 0.4s ease;
+  outline: none;
+  position: relative;
+  overflow: hidden;
+  font-weight: bold;
+}
 
-/* Change so that it doesn't affect every input and label taht exists*/
+.smoothButton::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+          circle,
+          rgba(255, 255, 255, 0.25) 0%,
+          rgba(255, 255, 255, 0) 70%
+  );
+  transform: scale(0);
+  transition: transform 0.5s ease;
+}
+
+.smoothButton:hover::after {
+  transform: scale(4);
+}
+
+.smoothButton:hover {
+  border-color: #666666;
+  background: #292929;
+}
+

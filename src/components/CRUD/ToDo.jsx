@@ -79,7 +79,16 @@ export default function ToDo() {
         toDoDiv.style.display = "block";
     }
 
-    const createModal = (title, description, completed) => {
+    const createModal = (title, description) => {
+        const completeButton = document.getElementById("completeButton");
+        let completed = 0;
+        if (completeButton.textContent === "Completed") {
+            completed = 1;
+            console.log("it worked");
+        }
+        else if (completeButton.textContent === "Uncompleted") {
+            completed = 0;
+        }
         create_task(title, description, completed);
         closeModal();
         retrieve_tasks();
@@ -96,29 +105,30 @@ export default function ToDo() {
             const createInputText = document.createElement("input");
             createInputText.type = "text";
             createInputText.placeholder = `${item}`;
+            createInputText.className = "modalInput";
             createInputText.id = `createInputText${index + 1}`;
             const createLabel = document.createElement("label");
             createLabel.textContent = `${item}`;
             createLabel.htmlFor = `${item}`;
-            createInputText.name = `${item}`;
+            createLabel.className = "modalLabel";
             formDiv.appendChild(createInputText);
             formDiv.appendChild(createLabel);
             createModalUI.appendChild(formDiv);
         });
-        const createInputCheckbox = document.createElement("input");
-        createInputCheckbox.type = "checkbox";
-        createInputCheckbox.onchange = onCheckedHandler; //Check the logic for this
+        const completeButton = document.createElement("button");
+        completeButton.id = "completeButton";
+        completeButton.className = "smoothButton";
+        completeButton.textContent = "Uncompleted";
+        completeButton.onclick = () => onClickCompleteButton();
         const createTaskCreaterButton = document.createElement("button");
+        createTaskCreaterButton.className = "smoothButton";
         createTaskCreaterButton.textContent = "Create";
-        createModalUI.appendChild(createInputCheckbox);
+        createTaskCreaterButton.id = "createButton";
+        createModalUI.appendChild(completeButton);
         createModalUI.appendChild(createTaskCreaterButton);
         const title = document.getElementById("createInputText1");
         const description = document.getElementById("createInputText2");
-        let completed = 0;
-        if (createInputCheckbox.checked === true) {
-            completed = 1;
-        }
-        createTaskCreaterButton.onclick = () => createModal(title.value, description.value, completed);
+        createTaskCreaterButton.onclick = () => createModal(title.value, description.value);
     }
 
     const updateModal = (id, completed) => {
@@ -134,28 +144,31 @@ export default function ToDo() {
         const array = [title, description];
         const createModalUI = document.getElementById("createModalUI");
         array.forEach((item, index) => {
+                const formDiv = document.createElement("div");
+                formDiv.className = "formDiv";
                 const createLabel = document.createElement("label");
                 createLabel.textContent = `${item}`;
                 createLabel.htmlFor = `${item}`;
-                createModalUI.appendChild(createLabel);
                 const createInputText = document.createElement("input");
                 createInputText.type = "text";
                 createInputText.value = item;
                 createInputText.id = `updateInput${index + 1}`;
                 createInputText.name = `${item}`;
-                createModalUI.appendChild(createInputText);
+                formDiv.appendChild(createLabel);
+                formDiv.appendChild(createInputText);
+                createModalUI.appendChild(formDiv);
                 console.log(createInputText.id);
             }
         )
         const createSaveButton = document.createElement("button");
+        createSaveButton.className = "smoothButton";
         createSaveButton.textContent = "Save";
-        createSaveButton.style.backgroundColor = "blue";
         createSaveButton.id = "saveButton";
         createSaveButton.onclick = () => updateModal(id, completed);
         createModalUI.appendChild(createSaveButton);
         const createDeleteButton = document.createElement("button");
+        createDeleteButton.className = "smoothButton";
         createDeleteButton.textContent = "Delete";
-        createDeleteButton.style.backgroundColor = "red";
         createDeleteButton.id = "deleteButton";
         createDeleteButton.onclick = () => onDeleteButton(id);
         createModalUI.appendChild(createDeleteButton);
@@ -178,19 +191,27 @@ export default function ToDo() {
         );
     }
 
+    const onClickCompleteButton = () => {
+        const completeButton = document.getElementById("completeButton");
+        if (completeButton.textContent === "Uncompleted") {
+            completeButton.textContent = "Completed";
+        } else {
+            completeButton.textContent = "Uncompleted";
+        }
+    }
+
 
     return (
         <div id="toDoDiv">
-            <button onClick={() => onCreateButton()}>Create</button>
+            <button  className="smoothButton createButton" onClick={() => onCreateButton()}>Create</button>
             <ul> {tasks.map((task, index) => (
                 <li className="toDoItem" /*Style needs to still be adjusted */ key={index}>
                     <strong>{task.title}</strong>
                     {task.description}
                     <input type="checkbox" checked={task.completed} onChange={() => onCheckedHandler(task.id)}/>
-                    <button
-                        onClick={() => onUpdateButton(task.id, task.title, task.description, task.completed)}>Update
+                    <button className="smoothButton updateButton"onClick={() => onUpdateButton(task.id, task.title, task.description, task.completed)}>Update
                     </button>
-                    <button onClick={() => onDeleteButton(task.id)}>Delete</button>
+                    <button className="smoothButton deleteButton" onClick={() => onDeleteButton(task.id)}>Delete</button>
                 </li>
             ))
             }
