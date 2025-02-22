@@ -1,5 +1,6 @@
 import {invoke} from "@tauri-apps/api/core";
 import {useEffect, useState} from "react";
+import React from "react";
 
 export default function ToDo() {
     const [tasks, setTasks] = useState([]);
@@ -216,24 +217,27 @@ export default function ToDo() {
     return (
         <div id="toDoDiv">
             <ul> {tasks.map((task, index) => (
-                <li className="toDoItem" key={index}>
-                    <input type="checkbox" checked={task.completed}
-                           onChange={(event) => onCheckedHandler(task.id, task.title, task.description, event)}/>
-                    <div className="toDoItemContent">
-                        <div className="toDoText">
-                            <strong>{task.title}</strong>
-                            {task.description}
+                <React.Fragment>
+                    <li className="toDoItem" key={index}>
+                        <input type="checkbox" checked={task.completed}
+                               onChange={(event) => onCheckedHandler(task.id, task.title, task.description, event)}/>
+                        <div className="toDoItemContent">
+                            <div className="toDoText">
+                                <strong>{task.title}</strong>
+                                {task.description}
+                            </div>
+                            <div className="toDoButtons">
+                                <button className="smoothButton updateButton"
+                                        onClick={() => onUpdateButton(task.id, task.title, task.description, task.completed)}>Update
+                                </button>
+                                <button className="smoothButton deleteButton" onClick={() => onDeleteButton(task.id)}>Delete
+                                </button>
+                            </div>
                         </div>
-                        <div className="toDoButtons">
-                            <button className="smoothButton updateButton"
-                                    onClick={() => onUpdateButton(task.id, task.title, task.description, task.completed)}>Update
-                            </button>
-                            <button className="smoothButton deleteButton" onClick={() => onDeleteButton(task.id)}>Delete
-                            </button>
-                        </div>
-                    </div>
-                </li>
-                /* More Factors should be added  */
+                    </li>
+                    {/* More Factors should be added  */}
+                    <p className={"spanLine"}></p>
+                </React.Fragment>
 
             ))}
             </ul>

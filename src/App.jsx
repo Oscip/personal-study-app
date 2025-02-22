@@ -1,6 +1,7 @@
 import "./App.css";
 import ToDo from "./components/ToDo.jsx";
 import SpotifyEmbedded from "./components/SpotifyEmbedded.jsx";
+import GoogleCalendarEmbedded from "./components/GoogleCalendarEmbedded.jsx";
 
 function App() {
 
@@ -8,6 +9,7 @@ function App() {
     <div className="container">
         <ToDo/>
         <SpotifyEmbedded/>
+        <GoogleCalendarEmbedded/>
     </div>
   );
 }
