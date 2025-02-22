@@ -1,11 +1,13 @@
 import "./App.css";
-import ToDo from "./components/CRUD/ToDo.jsx";
+import ToDo from "./components/ToDo.jsx";
+import SpotifyEmbedded from "./components/SpotifyEmbedded.jsx";
 
 function App() {
 
   return (
     <div className="container">
-      <ToDo/>
+        <ToDo/>
+        <SpotifyEmbedded/>
     </div>
   );
 }

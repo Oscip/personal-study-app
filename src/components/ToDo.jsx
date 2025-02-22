@@ -3,7 +3,6 @@ import {useEffect, useState} from "react";
 
 export default function ToDo() {
     const [tasks, setTasks] = useState([]);
-
     const modal = () => {
         const toDoDiv = document.getElementById("toDoDiv");
         toDoDiv.style.display = "none";
@@ -217,19 +216,21 @@ export default function ToDo() {
     return (
         <div id="toDoDiv">
             <ul> {tasks.map((task, index) => (
-                <li className="toDoItem" /*Style needs to still be adjusted */ key={index}>
-                    <div className="toDoText">
-                        <strong>{task.title}</strong>
-                        {task.description}
-                    </div>
-
-                    <input type="checkbox" checked={task.completed} onChange={(event) => onCheckedHandler(task.id, task.title, task.description, event)}/>
-                    <div className="toDoButtons">
-                        <button className="smoothButton updateButton"
-                                onClick={() => onUpdateButton(task.id, task.title, task.description, task.completed)}>Update
-                        </button>
-                        <button className="smoothButton deleteButton" onClick={() => onDeleteButton(task.id)}>Delete
-                        </button>
+                <li className="toDoItem" key={index}>
+                    <input type="checkbox" checked={task.completed}
+                           onChange={(event) => onCheckedHandler(task.id, task.title, task.description, event)}/>
+                    <div className="toDoItemContent">
+                        <div className="toDoText">
+                            <strong>{task.title}</strong>
+                            {task.description}
+                        </div>
+                        <div className="toDoButtons">
+                            <button className="smoothButton updateButton"
+                                    onClick={() => onUpdateButton(task.id, task.title, task.description, task.completed)}>Update
+                            </button>
+                            <button className="smoothButton deleteButton" onClick={() => onDeleteButton(task.id)}>Delete
+                            </button>
+                        </div>
                     </div>
                 </li>
                 /* More Factors should be added  */

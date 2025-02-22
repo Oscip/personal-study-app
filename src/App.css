@@ -1,30 +1,41 @@
 :root {
-  --primary: #11998e;
-  --secondary: #38ef7d;
-  --accent: #ff9f1c;
+  --primary: #2a2a2a;
+  --secondary: #bdbdbd;
   --danger: #ff4f4f;
-  --success: #28a745;
-  --warning: #ffcc00;
-  --info: #17a2b8;
   --white: #ffffff;
   --gray: #9b9b9b;
   --black: #000000;
-  --background: #f5f5f5;
+  --beige: #EAE3C9;
+}
+
+body {
+  background-color: var(--beige);
 }
 
 .toDoItem {
   list-style-type: none;
   display: flex;
+  justify-content: flex-start}
+
+.toDoItemContent {
+  display: flex;
   justify-content: space-between;
   border: var(--black) 1px solid;
   border-radius: 5px;
   margin: 1%;
+  width: 100%;
 }
 
-.toDoItem:hover {
+.toDoItemContent:hover {
   transform: scale(1.02);
 }
-/* After certain thing make it adjustable so use flex-direction: column; for better useability */
+
+@media (max-width: 500px) {
+  .toDoItem {
+    flex-direction: column;
+    width: 90%;
+  }
+}
 
 .toDoText {
   display: flex;
@@ -126,10 +137,7 @@
   border-image: linear-gradient(to right, var(--primary), var(--secondary));
   border-image-slice: 1;
 }
-/* reset input */
-.modalInput{
-  &:required,&:invalid { box-shadow:none; }
-}
+
 
 .smoothButton {
   padding: 15px 30px;
