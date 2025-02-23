@@ -4,6 +4,12 @@ import React from "react";
 
 export default function ToDo() {
     const [tasks, setTasks] = useState([]);
+    const Category = {
+        School: "School",
+        FreeTime: "FreeTime",
+        Work: "Work",
+    }
+
     const modal = () => {
         const toDoDiv = document.getElementById("toDoDiv");
         toDoDiv.style.display = "none";
@@ -33,32 +39,33 @@ export default function ToDo() {
         }
     }
 
-    async function create_task(title, description, completed) {
+    async function create_task(title, description, completed, category) {
         try {
             await invoke("create_task",
                 {
                     title: title,
                     description: description,
                     completed: completed,
+                    category: category,
                 });
         } catch (error) {
             console.error("Error: ", Error);
         }
     }
 
-    async function update_task(id, title, description, completed) {
+    async function update_task(id, title, description, completed, category) {
         try {
             await invoke("update_task", {
                 id: id,
                 title: title,
                 description: description,
-                completed: completed
+                completed: completed,
+                category: category,
             });
         } catch (error) {
             console.error("Error:", error);
         }
     }
-
 
     async function delete_task(id) {
         try {
@@ -78,7 +85,7 @@ export default function ToDo() {
         toDoDiv.style.display = "block";
     }
 
-    const createModal = (title, description) => {
+    const createModal = (title, description, category) => {
         const completeButton = document.getElementById("completeButton");
         let completed = 0;
         if (completeButton.textContent === "Completed") {
@@ -87,7 +94,7 @@ export default function ToDo() {
         } else if (completeButton.textContent === "Uncompleted") {
             completed = 0;
         }
-        create_task(title, description, completed);
+        create_task(title, description, completed, category);
         retrieve_tasks();
         closeModal();
     }
@@ -96,6 +103,7 @@ export default function ToDo() {
         modal();
         const array = ["Title", "Description"];
         const createModalUI = document.getElementById("createModalUI");
+        const createSelection = document.createElement("select");
 
         array.forEach((item, index) => {
             const formDiv = document.createElement("div");
@@ -113,6 +121,12 @@ export default function ToDo() {
             formDiv.appendChild(createLabel);
             createModalUI.appendChild(formDiv);
         });
+        Category.forEach((category) => {
+            const createCategory = document.createElement("option");
+            createCategory.value = category;
+            createCategory.textContent = category;
+            createSelection.appendChild(createCategory);
+        })
         const completeButton = document.createElement("button");
         completeButton.id = "completeButton";
         completeButton.className = "smoothButton completeButton";
@@ -126,18 +140,19 @@ export default function ToDo() {
         createModalUI.appendChild(createTaskCreaterButton);
         const title = document.getElementById("createInputText1");
         const description = document.getElementById("createInputText2");
-        createTaskCreaterButton.onclick = () => createModal(title.value, description.value);
+        const category = document.getElementById("categoryId");
+        createTaskCreaterButton.onclick = () => createModal(title.value, description.value, category.value);
     }
 
-    const updateModal = (id, completed) => {
+    const updateModal = (id, completed, category) => {
         const titleInput = document.getElementById("updateInput1");
         const descriptionInput = document.getElementById("updateInput2");
-        update_task(id, titleInput.value, descriptionInput.value, completed);
+        update_task(id, titleInput.value, descriptionInput.value, completed, category);
         retrieve_tasks();
         closeModal();
     }
 
-    const onUpdateButton = (id, title, description, completed) => {
+    const onUpdateButton = (id, title, description, completed, category) => {
         modal();
         const arrayValue = [title, description];
         const arrayHelp = ["Title", "Description"];
@@ -165,7 +180,7 @@ export default function ToDo() {
         createSaveButton.className = "smoothButton";
         createSaveButton.textContent = "Save";
         createSaveButton.id = "saveButton";
-        createSaveButton.onclick = () => updateModal(id, completed);
+        createSaveButton.onclick = () => updateModal(id, completed, category);
         createModalUI.appendChild(createSaveButton);
         const createDeleteButton = document.createElement("button");
         createDeleteButton.className = "smoothButton";
@@ -185,20 +200,19 @@ export default function ToDo() {
         closeModal();
     }
 
-    const onCheckedHandler = (id, title, description, event) => {
+    const onCheckedHandler = (id, title, description, category, event) => {
         let completed = 0;
         console.log(event.target.checked);
         if (event.target.checked) {
             completed = 1;
-        }
-        else if (!event.target.checked) {
+        } else if (!event.target.checked) {
             completed = 0;
         }
         console.log(id);
         console.log(title);
         console.log(description);
         console.log(completed);
-        update_task(id, title, description, completed);
+        update_task(id, title, description, completed, category);
         retrieve_tasks();
     }
 
@@ -213,29 +227,59 @@ export default function ToDo() {
         }
     }
 
+    const onCategoryChange = (id, event) => {
+        const category = event.target.value;
+        const task = tasks.find(task => task.id === id);
+
+        if (task) {
+            update_task(id, task.title, task.description, task.completed, category)
+                .then(() => {
+                    console.log(category);
+                    const updatedTasks = tasks.map(task =>
+                        task.id === id ? { ...task, category: category } : task
+                    );
+                    setTasks(updatedTasks);
+                })
+                .catch(error => {
+                    console.error("Error updating category:", error);
+                });
+        }
+    };
+
 
     return (
         <div id="toDoDiv">
             <ul> {tasks.map((task, index) => (
-                <React.Fragment>
+                <React.Fragment key={task.id}>
                     <li className="toDoItem" key={index}>
                         <input type="checkbox" checked={task.completed}
-                               onChange={(event) => onCheckedHandler(task.id, task.title, task.description, event)}/>
+                               onChange={(event) => onCheckedHandler(task.id, task.title, task.description, task.category, event)}/>
                         <div className="toDoItemContent">
                             <div className="toDoText">
                                 <strong>{task.title}</strong>
                                 {task.description}
                             </div>
+                            <div>
+                                <select
+                                    className={"categorySelect"}
+                                    value={task.category}
+                                    onChange={(event) => onCategoryChange(task.id, event)}
+                                >
+                                    {Object.values(Category).map((category) => (
+                                        <option key={category} value={category}>{category}</option>
+                                    ))}
+                                </select>
+                            </div>
                             <div className="toDoButtons">
                                 <button className="smoothButton updateButton"
-                                        onClick={() => onUpdateButton(task.id, task.title, task.description, task.completed)}>Update
+                                        onClick={() => onUpdateButton(task.id, task.title, task.description, task.completed, task.category)}>Update
                                 </button>
-                                <button className="smoothButton deleteButton" onClick={() => onDeleteButton(task.id)}>Delete
+                                <button className="smoothButton deleteButton"
+                                        onClick={() => onDeleteButton(task.id)}>Delete
                                 </button>
                             </div>
                         </div>
                     </li>
-                    {/* More Factors should be added  */}
                     <p className={"spanLine"}></p>
                 </React.Fragment>
 
