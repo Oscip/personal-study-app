@@ -6,8 +6,8 @@ export default function ToDo() {
     const [tasks, setTasks] = useState([]);
     const Category = {
         School: "School",
-        FreeTime: "FreeTime",
-        Work: "Work",
+        FreeTime: "Free Time",
+        Home: "Home",
     }
 
     const modal = () => {
@@ -49,12 +49,15 @@ export default function ToDo() {
                     category: category,
                 });
         } catch (error) {
-            console.error("Error: ", Error);
+            console.error("Error: ", error);
         }
     }
 
     async function update_task(id, title, description, completed, category) {
         try {
+            if (category === "Free Time") {
+                category = "FreeTime";
+            }
             await invoke("update_task", {
                 id: id,
                 title: title,
@@ -94,6 +97,12 @@ export default function ToDo() {
         } else if (completeButton.textContent === "Uncompleted") {
             completed = 0;
         }
+
+        if (category === "Free Time") {
+            console.log("Free Time category");
+            category = "FreeTime";
+        }
+        console.log(category);
         create_task(title, description, completed, category);
         retrieve_tasks();
         closeModal();
@@ -102,8 +111,15 @@ export default function ToDo() {
     const onCreateButton = () => {
         modal();
         const array = ["Title", "Description"];
+        const categoryArray = ["School", "Free Time", "Home"];
         const createModalUI = document.getElementById("createModalUI");
         const createSelection = document.createElement("select");
+        createSelection.className = "selectCategory";
+        createSelection.id = "createSelection";
+        createSelection.onchange = (event) => onCreatCategoryChange(event);
+        const createSelectionDiv = document.createElement("div");
+        createSelectionDiv.className = "selectContainer";
+        createSelectionDiv.appendChild(createSelection);
 
         array.forEach((item, index) => {
             const formDiv = document.createElement("div");
@@ -121,12 +137,14 @@ export default function ToDo() {
             formDiv.appendChild(createLabel);
             createModalUI.appendChild(formDiv);
         });
-        Category.forEach((category) => {
+        categoryArray.forEach((category, index) => {
+            console.log("test");
             const createCategory = document.createElement("option");
             createCategory.value = category;
             createCategory.textContent = category;
             createSelection.appendChild(createCategory);
-        })
+            console.log(`This worked ${index}`);
+        });
         const completeButton = document.createElement("button");
         completeButton.id = "completeButton";
         completeButton.className = "smoothButton completeButton";
@@ -136,12 +154,13 @@ export default function ToDo() {
         createTaskCreaterButton.className = "smoothButton";
         createTaskCreaterButton.textContent = "Create";
         createTaskCreaterButton.id = "createButton";
+        createModalUI.appendChild(createSelectionDiv);
         createModalUI.appendChild(completeButton);
         createModalUI.appendChild(createTaskCreaterButton);
         const title = document.getElementById("createInputText1");
         const description = document.getElementById("createInputText2");
-        const category = document.getElementById("categoryId");
-        createTaskCreaterButton.onclick = () => createModal(title.value, description.value, category.value);
+        const selection = document.getElementById("createSelection");
+        createTaskCreaterButton.onclick = () => createModal(title.value, description.value, selection.value);
     }
 
     const updateModal = (id, completed, category) => {
@@ -227,18 +246,23 @@ export default function ToDo() {
         }
     }
 
-    const onCategoryChange = (id, event) => {
-        const category = event.target.value;
-        const task = tasks.find(task => task.id === id);
+    const onCreatCategoryChange = (event) => {
+        const createSelection = document.getElementById("createSelection");
+        console.log(createSelection.value);
+        createSelection.value = event.target.value;
+        console.log(createSelection.value);
+    }
 
+    const onCategoryChange = (id, event) => {
+        let category = event.target.value === "Free Time" ? "FreeTime" : event.target.value;
+
+        const task = tasks.find(task => task.id === id);
         if (task) {
             update_task(id, task.title, task.description, task.completed, category)
                 .then(() => {
-                    console.log(category);
-                    const updatedTasks = tasks.map(task =>
+                    setTasks(tasks.map(task =>
                         task.id === id ? { ...task, category: category } : task
-                    );
-                    setTasks(updatedTasks);
+                    ));
                 })
                 .catch(error => {
                     console.error("Error updating category:", error);
@@ -247,28 +271,33 @@ export default function ToDo() {
     };
 
 
+
     return (
         <div id="toDoDiv">
             <ul> {tasks.map((task, index) => (
                 <React.Fragment key={task.id}>
-                    <li className="toDoItem" key={index}>
-                        <input type="checkbox" checked={task.completed}
-                               onChange={(event) => onCheckedHandler(task.id, task.title, task.description, task.category, event)}/>
+                    <li className="toDoItem" key={task.id}>
+                        <label className="checkbox-container">
+                            <input className="custom-checkbox" type="checkbox" checked={task.completed}
+                                   onChange={(event) => onCheckedHandler(task.id, task.title, task.description, task.category, event)}/>
+                            <span className="checkmark"></span>
+                        </label>
                         <div className="toDoItemContent">
                             <div className="toDoText">
                                 <strong>{task.title}</strong>
                                 {task.description}
                             </div>
-                            <div>
+                            <div className="selectContainer">
                                 <select
-                                    className={"categorySelect"}
-                                    value={task.category}
+                                    className={"selectCategory"}
+                                    value={task.category === "FreeTime" ? "Free Time" : task.category}
                                     onChange={(event) => onCategoryChange(task.id, event)}
                                 >
                                     {Object.values(Category).map((category) => (
                                         <option key={category} value={category}>{category}</option>
                                     ))}
                                 </select>
+                                <div className="select-arrow"></div>
                             </div>
                             <div className="toDoButtons">
                                 <button className="smoothButton updateButton"
@@ -285,7 +314,9 @@ export default function ToDo() {
 
             ))}
             </ul>
-            <button className="smoothButton createButton" onClick={() => onCreateButton()}>Create</button>
+            <div className="createButtonDiv">
+                <button className="smoothButton createButton" onClick={() => onCreateButton()}>Create</button>
+            </div>
         </div>
     )
 }

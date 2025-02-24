@@ -6,7 +6,7 @@ use serde::{Deserialize, Serialize};
 enum Category {
     School,
     FreeTime,
-    Work,
+    Home,
 }
 
 impl Category {
@@ -14,14 +14,14 @@ impl Category {
         match self {
             Category::School => "School",
             Category::FreeTime => "Free Time",
-            Category::Work => "Work",
+            Category::Home => "Home",
         }
     }
     fn from_str(s: &str) -> Option<Self> {
         match s {
             "School" => Some(Category::School),
             "Free Time" => Some(Category::FreeTime),
-            "Work" => Some(Category::Work),
+            "Home" => Some(Category::Home),
             _ => None,
         }
     }
