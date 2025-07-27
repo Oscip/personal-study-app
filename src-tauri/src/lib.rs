@@ -17,6 +17,7 @@ impl Category {
             Category::Home => "Home",
         }
     }
+
     fn from_str(s: &str) -> Option<Self> {
         match s {
             "School" => Some(Category::School),
@@ -27,9 +28,6 @@ impl Category {
     }
 }
 
-
-
-
 #[derive(Serialize, Deserialize)]
 struct Task {
     id: i32,
@@ -39,34 +37,41 @@ struct Task {
     category: Category,
 }
 
-fn get_connection() -> Pool {
+fn get_connection() -> Result<Pool, String> {
     let url = "mysql://root:1234@localhost:3306/StudyAppToDoList";
-    Pool::new(url).unwrap()
+    Pool::new(url).map_err(|e| e.to_string())
 }
 
 #[tauri::command]
-fn get_tasks() -> Vec<Task> {
-    let pool = get_connection();
-    let mut conn = pool.get_conn().unwrap();
+fn get_tasks() -> Result<Vec<Task>, String> {
+    let pool = get_connection()?;
+    let mut conn = pool.get_conn().map_err(|e| e.to_string())?;
 
-    let tasks: Vec<Task> = conn
-        .query("SELECT id, title, description, completed, category FROM tasks")
-        .unwrap()
+    let result: Result<Vec<Task>, String> = conn
+        .query::<(i32, String, String, i8, String), _>(
+            "SELECT id, title, description, completed, category FROM tasks"
+        )
+        .map_err(|e| e.to_string())?
         .into_iter()
-        .map(|row| {
-            let (id, title, description, completed, category_str): (i32, String, String, i8, String) = mysql::from_row(row);
-            let category = Category::from_str(&category_str).unwrap_or(Category::School);
-            Task { id, title, description, completed, category }
+        .map(|(id, title, description, completed, category_str)| {
+            let category = Category::from_str(&category_str)
+                .ok_or_else(|| format!("Unknown category: {}", category_str))?;
+            Ok(Task {
+                id,
+                title,
+                description,
+                completed,
+                category,
+            })
         })
         .collect();
 
-    tasks
+    result
 }
-
 
 #[tauri::command]
 fn create_task(title: String, description: String, completed: i8, category: Category) -> Result<(), String> {
-    let pool = get_connection();
+    let pool = get_connection()?;
     let mut conn = pool.get_conn().map_err(|e| e.to_string())?;
     conn.exec_drop(
         "INSERT INTO tasks (title, description, completed, category) VALUES (:title, :description, :completed, :category)",
@@ -82,7 +87,7 @@ fn create_task(title: String, description: String, completed: i8, category: Cate
 
 #[tauri::command]
 fn update_task(id: i32, title: String, description: String, completed: i8, category: Category) -> Result<(), String> {
-    let pool = get_connection();
+    let pool = get_connection()?;
     let mut conn = pool.get_conn().map_err(|e| e.to_string())?;
     conn.exec_drop(
         "UPDATE tasks SET title = :title, description = :description, completed = :completed, category = :category WHERE id = :id",
@@ -99,7 +104,7 @@ fn update_task(id: i32, title: String, description: String, completed: i8, categ
 
 #[tauri::command]
 fn delete_task(id: i32) -> Result<(), String> {
-    let pool = get_connection();
+    let pool = get_connection()?;
     let mut conn = pool.get_conn().map_err(|e| e.to_string())?;
     conn.exec_drop(
         "DELETE FROM tasks WHERE id = :id",
@@ -110,15 +115,15 @@ fn delete_task(id: i32) -> Result<(), String> {
     Ok(())
 }
 
-#[tauri::command]
-fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
-}
-
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![greet, get_tasks, create_task, update_task, delete_task])
+        .invoke_handler(tauri::generate_handler![
+            get_tasks,
+            create_task,
+            update_task,
+            delete_task
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
