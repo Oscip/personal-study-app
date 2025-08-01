@@ -16,15 +16,52 @@ body {
 .toDoItem {
   list-style-type: none;
   display: flex;
-  justify-content: flex-start}
+  justify-content: flex-start;
+  width:100%;
+}
 
 .toDoItemContent {
-  display: flex;
-  justify-content: space-between;
-  border-radius: 5px;
-  margin: 1%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr; /* 3 equal columns */
+  align-items: center;
+  column-gap: 20px;
   width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
 }
+.container {
+  display: flex;
+  width: 100%;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.left-panel {
+  flex: 0 0 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.right-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .left-panel,
+  .right-panel {
+    width: 100%;
+    flex: none;
+  }
+}
+
 
 .toDoItemContent:hover {
   transform: scale(1.02);
@@ -347,6 +384,13 @@ body {
 
 .completeButton {
     background-color: var(--danger);
+}
+
+.toDoButtons {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 2 equal columns */
+  gap: 10px;
+  width: 100%;
 }
 
 

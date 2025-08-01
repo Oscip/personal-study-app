@@ -6,7 +6,7 @@ import GoogleCalendarEmbedded from "./components/GoogleCalendarEmbedded.jsx";
 function App() {
 
   return (
-    <div className="container">
+    <div>
         <ToDo/>
         <SpotifyEmbedded/>
         <GoogleCalendarEmbedded/>

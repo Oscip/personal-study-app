@@ -1,42 +1,7 @@
 use mysql::*;
 use mysql::prelude::*;
-use serde::{Deserialize, Serialize};
-
-#[derive(Serialize, Deserialize)]
-enum Category {
-    School,
-    FreeTime,
-    Home,
-}
-
-impl Category {
-    fn as_str(&self) -> &'static str {
-        match self {
-            Category::School => "School",
-            Category::FreeTime => "Free Time",
-            Category::Home => "Home",
-        }
-    }
-
-    fn from_str(s: &str) -> Option<Self> {
-        match s {
-            "School" => Some(Category::School),
-            "Free Time" => Some(Category::FreeTime),
-            "Home" => Some(Category::Home),
-            _ => None,
-        }
-    }
-}
-
-#[derive(Serialize, Deserialize)]
-struct Task {
-    id: i32,
-    title: String,
-    description: String,
-    completed: i8,
-    category: Category,
-}
-
+use model::models::{Task, Category};
+pub mod model;
 fn get_connection() -> Result<Pool, String> {
     let url = "mysql://root:1234@localhost:3306/StudyAppToDoList";
     Pool::new(url).map_err(|e| e.to_string())

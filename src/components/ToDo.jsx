@@ -277,11 +277,13 @@ export default function ToDo() {
             <ul> {tasks.map((task, index) => (
                 <React.Fragment key={task.id}>
                     <li className="toDoItem" key={task.id}>
-                        <label className="checkbox-container">
-                            <input className="custom-checkbox" type="checkbox" checked={task.completed}
-                                   onChange={(event) => onCheckedHandler(task.id, task.title, task.description, task.category, event)}/>
-                            <span className="checkmark"></span>
-                        </label>
+                        <div className="left-panel">
+                            <label className="checkbox-container">
+                                <input className="custom-checkbox" type="checkbox" checked={task.completed}
+                                       onChange={(event) => onCheckedHandler(task.id, task.title, task.description, task.category, event)}/>
+                                <span className="checkmark"></span>
+                            </label>
+                        </div>
                         <div className="toDoItemContent">
                             <div className="toDoText">
                                 <strong>{task.title}</strong>
