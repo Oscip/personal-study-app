@@ -306,7 +306,7 @@ export default function ToDo() {
                                         onClick={() => onUpdateButton(task.id, task.title, task.description, task.completed, task.category)}>Update
                                 </button>
                                 <button className="smoothButton deleteButton"
-                                        onClick={() => onDeleteButton(task.id)}>Delete
+                                        onClick={() => onDeleteButton(task.id)}><p>Delete</p>
                                 </button>
                             </div>
                         </div>
@@ -317,7 +317,7 @@ export default function ToDo() {
             ))}
             </ul>
             <div className="createButtonDiv">
-                <button className="smoothButton createButton" onClick={() => onCreateButton()}>Create</button>
+                <button className="smoothButton createButton" onClick={() => onCreateButton()}><p>Create</p></button>
             </div>
         </div>
     )

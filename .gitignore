@@ -12,8 +12,7 @@ node_modules/
 .env
 
 # .vscode workspace settings file
-.vscode/settings.json
-.vscode
+.vscode/
 .idea
 
 # npm, yarn and bun lock files
@@ -52,5 +51,4 @@ pids
 .idea
 debug.log
 TODO.md
-.vscode
 .gitignore

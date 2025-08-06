@@ -29,6 +29,29 @@ body {
   padding: 10px;
   box-sizing: border-box;
 }
+
+.toDoButtons {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* 2 equal columns */
+  gap: 10px;
+  width: 100%;
+}
+
+@Media (max-width: 1100px) {
+  .toDoButtons {
+    grid-template-columns: 1fr; /* one column for small screens */
+  }
+  .toDoButtons button {
+    height: 50px;
+    display: flex;
+    align-items: center;   /* vertical center */
+    justify-content: center; /* horizontal center */
+    margin-bottom: 0px;
+    margin: 5px 0;
+  }
+
+}
+
 .container {
   display: flex;
   width: 100%;
@@ -85,7 +108,6 @@ body {
 .checkbox-container {
   display: inline-block;
   position: relative;
-  margin-top: 3%;
   padding-left: 35px;
   cursor: pointer;
   font-size: 16px;
@@ -324,9 +346,7 @@ body {
 
 
 .smoothButton {
-  padding: 15px 30px;
   border: 2px solid #2c2c2c;
-  background-color: #1a1a1a;
   color: #ffffff;
   font-size: 1.2rem;
   cursor: pointer;
@@ -366,12 +386,13 @@ body {
 
 .createButton {
   background-color: var(--black);
+  padding: 0 95px ;
 }
 
 .createButtonDiv {
   display: flex;
   justify-content: flex-end;
-  margin: 2%;
+  margin: 2% 1%;
 }
 
 .updateButton {
@@ -386,12 +407,7 @@ body {
     background-color: var(--danger);
 }
 
-.toDoButtons {
-  display: grid;
-  grid-template-columns: 1fr 1fr; /* 2 equal columns */
-  gap: 10px;
-  width: 100%;
-}
+
 
 
 
