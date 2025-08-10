@@ -1,14 +1,14 @@
 import "./App.css";
 import ToDo from "./components/ToDo.jsx";
-import SpotifyEmbedded from "./components/SpotifyEmbedded.jsx";
 import GoogleCalendarEmbedded from "./components/GoogleCalendarEmbedded.jsx";
+import SoundcloudEmbedded from "./components/SoundcloudEmbedded.jsx";
 
 function App() {
 
   return (
     <div>
         <ToDo/>
-        <SpotifyEmbedded/>
+        <SoundcloudEmbedded/>
         <GoogleCalendarEmbedded/>
     </div>
   );
