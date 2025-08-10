@@ -18,6 +18,10 @@ body {
     margin: 0px;
 }
 
+.body-replacement {
+    margin: 0 8px;
+}
+
 .toDoItem {
     list-style-type: none;
     display: flex;
@@ -450,14 +454,20 @@ body {
     display: flex;
     justify-content: center;
     background: var(--navyblue);
-    margin-bottom: 50px;
+    height: 0px;
 }
 
-.title-container div h1 {
+.title-container h1 {
     text-shadow: 1px 1px var(--white);
     color: var(--beige);
     font-size: 4rem;
     font-family: 'gugi';
+}
+
+.gradient-block {
+    width: 100%;
+    height: 200px;
+    background: linear-gradient(to bottom, var(--black), var(--beige));
 }
 
 

@@ -9,9 +9,12 @@ function App() {
     return (
         <div>
             <Title/>
-            <ToDo/>
-            <SoundcloudEmbedded/>
-            <GoogleCalendarEmbedded/>
+            <div className="body-replacement">
+                <ToDo/>
+                <SoundcloudEmbedded/>
+                <GoogleCalendarEmbedded/>
+            </div>
+
         </div>
     );
 }
