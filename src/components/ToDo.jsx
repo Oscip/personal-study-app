@@ -287,7 +287,7 @@ export default function ToDo() {
                         <div className="toDoItemContent">
                             <div className="toDoText">
                                 <strong>{task.title}</strong>
-                                {task.description}
+                                <p>{task.description}</p>
                             </div>
                             <div className="selectContainer">
                                 <select

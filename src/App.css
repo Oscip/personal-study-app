@@ -100,15 +100,29 @@ body {
 .toDoText {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  align-items: center; /* Center title horizontally */
+  text-align: justify; /* Makes block-style text look aligned */
+  max-width: 300px; /* Control width so lines have similar length */
+  margin: 0 auto; /* Center the whole block */
 }
+
+.toDoText strong {
+  margin-bottom: 0.5rem; /* Space between title and text */
+  text-align: center; /* Title itself centered */
+}
+
+.toDoText p {
+  margin: 0;
+  text-align: justify; /* Block-style paragraph */
+}
+
 
 
 .checkbox-container {
   display: inline-block;
   position: relative;
   padding-left: 35px;
+  padding-bottom: 25px;
   cursor: pointer;
   font-size: 16px;
   user-select: none;
@@ -356,7 +370,6 @@ body {
   position: relative;
   overflow: hidden;
   font-weight: bold;
-  margin-bottom: 15px;
 }
 
 .smoothButton::after {
