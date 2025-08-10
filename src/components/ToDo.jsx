@@ -277,15 +277,17 @@ export default function ToDo() {
             <ul> {tasks.map((task, index) => (
                 <React.Fragment key={task.id}>
                     <li className="toDoItem" key={task.id}>
-                        <label className="checkbox-container">
-                            <input className="custom-checkbox" type="checkbox" checked={task.completed}
-                                   onChange={(event) => onCheckedHandler(task.id, task.title, task.description, task.category, event)}/>
-                            <span className="checkmark"></span>
-                        </label>
+                        <div className="left-panel">
+                            <label className="checkbox-container">
+                                <input className="custom-checkbox" type="checkbox" checked={task.completed}
+                                       onChange={(event) => onCheckedHandler(task.id, task.title, task.description, task.category, event)}/>
+                                <span className="checkmark"></span>
+                            </label>
+                        </div>
                         <div className="toDoItemContent">
                             <div className="toDoText">
                                 <strong>{task.title}</strong>
-                                {task.description}
+                                <p>{task.description}</p>
                             </div>
                             <div className="selectContainer">
                                 <select
@@ -304,7 +306,7 @@ export default function ToDo() {
                                         onClick={() => onUpdateButton(task.id, task.title, task.description, task.completed, task.category)}>Update
                                 </button>
                                 <button className="smoothButton deleteButton"
-                                        onClick={() => onDeleteButton(task.id)}>Delete
+                                        onClick={() => onDeleteButton(task.id)}><p>Delete</p>
                                 </button>
                             </div>
                         </div>
@@ -315,7 +317,7 @@ export default function ToDo() {
             ))}
             </ul>
             <div className="createButtonDiv">
-                <button className="smoothButton createButton" onClick={() => onCreateButton()}>Create</button>
+                <button className="smoothButton createButton" onClick={() => onCreateButton()}><p>Create</p></button>
             </div>
         </div>
     )

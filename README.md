@@ -63,4 +63,4 @@ npm run tauri dev
 
 ## © Credit
 
-Made with by **Oscar Peach**
+Made by **Oscar Peach**
