@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Gugi&display=swap');
+
 :root {
     --primary: #2a2a2a;
     --secondary: #bdbdbd;
@@ -10,8 +12,10 @@
     --navyblue: #002952;
 }
 
+
 body {
     background-color: var(--beige);
+    margin: 0px;
 }
 
 .toDoItem {
@@ -443,26 +447,17 @@ body {
 }
 
 .title-container {
-    display:grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-
-}
-
-.title-container div {
     display: flex;
     justify-content: center;
-    grid-column: 2 / 5;
     background: var(--navyblue);
-    border-radius: 100px;
-    margin: 0 10%;
     margin-bottom: 50px;
-    margin-top: 25px
 }
 
 .title-container div h1 {
     text-shadow: 1px 1px var(--white);
     color: var(--beige);
     font-size: 4rem;
+    font-family: 'gugi';
 }
 
 
