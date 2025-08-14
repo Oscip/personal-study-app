@@ -80,6 +80,24 @@ fn delete_task(id: i32) -> Result<(), String> {
     Ok(())
 }
 
+#[tauri::command]
+pub fn filter_tasks(
+    completed_filter: Option<bool>,
+    category_filter: Option<Category>,
+) -> Result<Vec<Task>, String> {
+    let tasks = get_tasks()?;
+
+    let filtered = tasks.into_iter()
+        .filter(|task| {
+            let completed_match = completed_filter.map_or(true, |value| (task.completed != 0) == value);
+            let category_match = category_filter.as_ref().map_or(true, |cat| &task.category == cat);
+            completed_match && category_match
+        })
+        .collect();
+    Ok(filtered)
+}
+
+
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
@@ -87,7 +105,8 @@ pub fn run() {
             get_tasks,
             create_task,
             update_task,
-            delete_task
+            delete_task,
+            filter_tasks
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
