@@ -81,7 +81,7 @@ fn delete_task(id: i32) -> Result<(), String> {
 }
 
 #[tauri::command]
-pub fn filter_tasks(
+fn filter_tasks(
     completed_filter: Option<bool>,
     category_filter: Option<Category>,
 ) -> Result<Vec<Task>, String> {
