@@ -31,7 +31,7 @@ body {
 
 .toDoItemContent {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr; /* 3 equal columns */
+    grid-template-columns: 1fr 1fr 1fr;
     align-items: center;
     column-gap: 20px;
     width: 100%;
@@ -41,21 +41,21 @@ body {
 
 .toDoButtons {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* 2 equal columns */
+    grid-template-columns: 1fr 1fr;
     gap: 10px;
     width: 100%;
 }
 
 @Media (max-width: 1100px) {
     .toDoButtons {
-        grid-template-columns: 1fr; /* one column for small screens */
+        grid-template-columns: 1fr;
     }
 
     .toDoButtons button {
         height: 50px;
         display: flex;
-        align-items: center; /* vertical center */
-        justify-content: center; /* horizontal center */
+        align-items: center;
+        justify-content: center;
         margin-bottom: 0px;
         margin: 5px 0;
     }
@@ -110,20 +110,20 @@ body {
 .toDoText {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center title horizontally */
-    text-align: justify; /* Makes block-style text look aligned */
-    max-width: 300px; /* Control width so lines have similar length */
-    margin: 0 auto; /* Center the whole block */
+    align-items: center;
+    text-align: justify;
+    max-width: 300px;
+    margin: 0 auto;
 }
 
 .toDoText strong {
-    margin-bottom: 0.5rem; /* Space between title and text */
-    text-align: center; /* Title itself centered */
+    margin-bottom: 0.5rem;
+    text-align: center;
 }
 
 .toDoText p {
     margin: 0;
-    text-align: justify; /* Block-style paragraph */
+    text-align: justify;
 }
 
 
@@ -193,16 +193,15 @@ body {
     animation: checkAnim 0.1s forwards;
 }
 
-/* Custom Select Container */
 .selectContainer {
     position: relative;
-    width: 200px; /* Adjust width as needed */
+    width: 200px;
     margin: 20px;
 }
 
-/* Select Box Styling */
+
 .selectCategory {
-    appearance: none; /* Remove default arrow */
+    appearance: none;
     width: 100%;
     padding: 12px 16px;
     font-size: 16px;
@@ -216,19 +215,16 @@ body {
     transition: all 0.3s ease;
 }
 
-/* Hover Effect */
 .selectCategory:hover {
     border-color: #007bff;
     box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
 }
 
-/* Focus Effect */
 .selectCategory:focus {
     border-color: #007bff;
     box-shadow: 0 0 12px rgba(0, 123, 255, 0.5);
 }
 
-/* Custom Arrow */
 .select-arrow {
     position: absolute;
     top: 50%;
@@ -243,12 +239,10 @@ body {
     transition: transform 0.3s ease;
 }
 
-/* Rotate Arrow on Focus */
 .selectCategory:focus + .select-arrow {
     transform: translateY(-50%) rotate(180deg);
 }
 
-/* Dropdown Options Styling */
 .selectCategory option {
     padding: 12px 16px;
     background-color: #fff;
@@ -257,7 +251,6 @@ body {
 }
 
 
-/* Responsive Design */
 @media (max-width: 600px) {
     .selectContainer {
         width: 100%;
@@ -467,6 +460,7 @@ body {
     height: 200px;
     background: linear-gradient(to bottom, var(--black), var(--beige));
 }
+
 .task-header {
     display: flex;
     justify-content: flex-start;
@@ -479,27 +473,41 @@ body {
 
 .selectContainerFilter {
     position: relative;
-    width: 200px;
+    width: auto;
+    max-width: 100%;
     margin: 20px;
     text-align: center;
 }
 
+.arrow-filter-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+    width: auto;
+}
+
+
 .task-header-text {
-    font-size: clamp(1em, 2vw, 1.25em); /* scales with screen */
+    font-size: clamp(1em, 2vw, 1.25em);
     margin: 0;
 }
 
-.arrow-filter-container {
-    display: flex;
-    align-items: center; /* vertical alignment */
-    gap: 0.5em; /* space between text and arrow scales with font-size if using em */
-}
 
 .select-arrow-filter {
     border-left: 0.4em solid transparent;
     border-right: 0.4em solid transparent;
     border-top: 0.5em solid var(--black);
 }
+
+.arrow-filter-container-category {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+    width: 250px;
+}
+
 
 
 

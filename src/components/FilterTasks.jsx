@@ -11,7 +11,7 @@ export default function FilterTasks() {
                             <p className="task-header-text">Description</p>
                             <div className="select-arrow-filter"></div>
                         </div>
-                        <div className="arrow-filter-container">
+                        <div className="arrow-filter-container-category">
                             <p className="task-header-text">Category</p>
                             <div className="select-arrow-filter"></div>
                         </div>
