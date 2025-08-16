@@ -96,7 +96,7 @@ body {
 }
 
 
-.toDoItemContent:hover {
+.toDoItemContent:hov er {
     transform: scale(1.02);
 }
 
@@ -175,10 +175,6 @@ body {
     box-shadow: 0 3px 7px rgba(33, 150, 243, 0.3);
 }
 
-.custom-checkbox:checked ~ .checkmark:after {
-    display: block;
-}
-
 @keyframes checkAnim {
     0% {
         height: 0;
@@ -191,6 +187,7 @@ body {
 
 .custom-checkbox:checked ~ .checkmark:after {
     animation: checkAnim 0.1s forwards;
+    display: block;
 }
 
 .selectContainer {
@@ -487,6 +484,11 @@ body {
     width: auto;
 }
 
+.arrow-filter-container:hover, .arrow-filter-container-category:hover {
+    transform: scale(1.02);
+}
+
+
 
 .task-header-text {
     font-size: clamp(1em, 2vw, 1.25em);
@@ -498,6 +500,7 @@ body {
     border-left: 0.4em solid transparent;
     border-right: 0.4em solid transparent;
     border-top: 0.5em solid var(--black);
+    cursor: pointer;
 }
 
 .arrow-filter-container-category {
@@ -508,9 +511,15 @@ body {
     width: 250px;
 }
 
-
-
-
+.right-panel-filter {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    column-gap: 20px;
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
 
 
 
