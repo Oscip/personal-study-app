@@ -1,4 +1,3 @@
-import {useState} from "react";
 import DropDown from "./DropDown.jsx";
 import React from "react";
 export default function FilterTasks() {
@@ -19,7 +18,7 @@ export default function FilterTasks() {
                             <div className="select-arrow-filter" id="description-arrow"></div>
                         </div>
                         <div className="arrow-filter-container-category" id="category-div">
-                            <DropDown options={["Home", "School", "Free Time", "All"]}
+                            <DropDown options={["All", "School", "Free Time", "Home"]}
                                       defaultOption="Category"/>
                         </div>
                     </div>

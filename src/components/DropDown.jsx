@@ -12,13 +12,13 @@ export default function DropDown({ options = [], defaultOption }) {
     };
 
     return (
-        <div className="relative w-48">
+        <div className="relative w-full">
             <button
                 onClick={toggleOpen}
                 className={`flex w-full items-center justify-between px-3 py-2 rounded-md transition-colors
           ${isOpen ? "border border-black bg-white/70" : "border border-transparent bg-transparent"}`}
             >
-                <span className="capitalize">{selected}</span>
+                <span className="capitalize pl-50">{selected}</span>
                 <ChevronDown className="h-4 w-4" />
             </button>
 

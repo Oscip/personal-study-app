@@ -492,7 +492,8 @@ body {
     align-items: center;
     justify-content: center;
     gap: 0.5em;
-    width: 250px;
+    width: 200px;
+    margin: 0px 17px;
 }
 
 .arrow-filter-container:hover {
@@ -522,6 +523,10 @@ body {
     width: 100%;
     padding: 10px;
     box-sizing: border-box;
+}
+
+.pl-50 {
+    padding-left: 50px;
 }
 
 
