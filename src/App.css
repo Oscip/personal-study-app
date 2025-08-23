@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Gugi&display=swap');
+@import "tailwindcss";
+
 
 :root {
     --primary: #2a2a2a;
@@ -130,7 +132,6 @@ body {
 .checkbox-container {
     display: inline-block;
     position: relative;
-    padding-left: 35px;
     padding-bottom: 25px;
     cursor: pointer;
     font-size: 16px;
@@ -161,8 +162,8 @@ body {
     content: "";
     position: absolute;
     display: none;
-    left: 9px;
-    top: 5px;
+    left: 10px;
+    top: 6px;
     width: 5px;
     height: 10px;
     border: solid white;
@@ -198,6 +199,8 @@ body {
 
 
 .selectCategory {
+    position: relative;
+    z-index: 1;
     appearance: none;
     width: 100%;
     padding: 12px 16px;
@@ -484,7 +487,15 @@ body {
     width: auto;
 }
 
-.arrow-filter-container:hover, .arrow-filter-container-category:hover {
+.arrow-filter-container-category {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+    width: 250px;
+}
+
+.arrow-filter-container:hover {
     transform: scale(1.02);
 }
 
@@ -501,14 +512,6 @@ body {
     border-right: 0.4em solid transparent;
     border-top: 0.5em solid var(--black);
     cursor: pointer;
-}
-
-.arrow-filter-container-category {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5em;
-    width: 250px;
 }
 
 .right-panel-filter {
