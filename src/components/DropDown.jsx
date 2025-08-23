@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { ChevronDown, Check } from "lucide-react";
 
 export default function DropDown({ options = [], defaultOption }) {
     const [isOpen, setIsOpen] = useState(false);
     const [selected, setSelected] = useState(defaultOption || options[0]);
+    const dropdownRef = useRef(null);
 
     const toggleOpen = () => setIsOpen(!isOpen);
     const handleSelect = (option) => {
@@ -11,8 +12,22 @@ export default function DropDown({ options = [], defaultOption }) {
         setIsOpen(false);
     };
 
+    // Close dropdown when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setIsOpen(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
+
     return (
-        <div className="relative w-full">
+        <div ref={dropdownRef} className="relative w-full">
             <button
                 onClick={toggleOpen}
                 className={`flex w-full items-center justify-between px-3 py-2 rounded-md transition-colors
