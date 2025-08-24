@@ -513,6 +513,15 @@ body {
     border-right: 0.4em solid transparent;
     border-top: 0.5em solid var(--black);
     cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.select-arrow-filter.asc {
+    transform: rotate(0deg);
+}
+
+.select-arrow-filter.desc {
+    transform: rotate(180deg);
 }
 
 .right-panel-filter {

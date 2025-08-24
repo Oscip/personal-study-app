@@ -1,5 +1,6 @@
 import DropDown from "./DropDown.jsx";
 import React from "react";
+import SortArrow from "./SortArrow.jsx";
 export default function FilterTasks() {
 
     return (
@@ -8,14 +9,12 @@ export default function FilterTasks() {
                 <div className="task-header">
                     <div className="left-panel">
                         <div className="arrow-filter-container">
-                            <p className="task-header-text">Completed</p>
-                            <div className="select-arrow-filter" id="completed-arrow"></div>
+                            <SortArrow text="Completed"/>
                         </div>
                     </div>
                     <div className="toDoItemContent">
                         <div className="arrow-filter-container">
                             <p className="task-header-text">Description</p>
-                            <div className="select-arrow-filter" id="description-arrow"></div>
                         </div>
                         <div className="arrow-filter-container-category" id="category-div">
                             <DropDown options={["All", "School", "Free Time", "Home"]}
