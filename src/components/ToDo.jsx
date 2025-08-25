@@ -2,7 +2,7 @@ import {invoke} from "@tauri-apps/api/core";
 import {useEffect, useState} from "react";
 import React from "react";
 
-export default function ToDo() {
+export default function ToDo({filterValue}) {
     const [tasks, setTasks] = useState([]);
     const Category = {
         School: "School",
@@ -10,10 +10,28 @@ export default function ToDo() {
         Home: "Home",
     }
 
+    async function fetchFilteredTasks() {
+        try {
+            console.log("Fetching filtered tasks with filter:", filterValue);
+
+            const result = await invoke("filter_tasks", {
+                completedFilter: filterValue.completed,
+                categoryFilter: filterValue.category
+            });
+            console.log("Filtered option", filterValue.category);
+            console.log("Filtered tasks fetched: ", result);
+            setTasks(result);
+        } catch (error) {
+            console.error("Error fetching tasks: ", error);
+        }
+    }
+
+
+
     const modal = () => {
         const toDoDiv = document.getElementById("toDoDiv");
         toDoDiv.style.display = "none";
-        const container = document.getElementsByClassName("container")[0];
+        const container = document.getElementsByClassName("root")[0];
         const createModalFrame = document.createElement("div");
         createModalFrame.id = "createModalFrame";
         createModalFrame.className = "modalFrame";
@@ -81,7 +99,7 @@ export default function ToDo() {
     }
 
     const closeModal = () => {
-        const container = document.getElementsByClassName("container")[0];
+        const container = document.getElementsByClassName("root")[0];
         const modalFrame = document.getElementById("createModalFrame");
         const toDoDiv = document.getElementById("toDoDiv");
         container.removeChild(modalFrame);
@@ -104,7 +122,7 @@ export default function ToDo() {
         }
         console.log(category);
         create_task(title, description, completed, category);
-        retrieve_tasks();
+        fetchFilteredTasks();
         closeModal();
     }
 
@@ -167,7 +185,7 @@ export default function ToDo() {
         const titleInput = document.getElementById("updateInput1");
         const descriptionInput = document.getElementById("updateInput2");
         update_task(id, titleInput.value, descriptionInput.value, completed, category);
-        retrieve_tasks();
+        fetchFilteredTasks();
         closeModal();
     }
 
@@ -210,12 +228,12 @@ export default function ToDo() {
     }
 
     useEffect(() => {
-        retrieve_tasks();
-    }, []);
+        fetchFilteredTasks();
+    }, [filterValue]);
 
     const onDeleteButton = (id) => {
         delete_task(id);
-        retrieve_tasks();
+        fetchFilteredTasks();
         closeModal();
     }
 
@@ -232,7 +250,7 @@ export default function ToDo() {
         console.log(description);
         console.log(completed);
         update_task(id, title, description, completed, category);
-        retrieve_tasks();
+        fetchFilteredTasks();
     }
 
     const onClickCompleteButton = () => {

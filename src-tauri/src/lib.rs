@@ -83,19 +83,38 @@ fn delete_task(id: i32) -> Result<(), String> {
 #[tauri::command]
 fn filter_tasks(
     completed_filter: Option<bool>,
-    category_filter: Option<Category>,
+    category_filter: Option<String>,
 ) -> Result<Vec<Task>, String> {
-    let tasks = get_tasks()?;
+    let mut tasks = get_tasks()?;
+    println!("All tasks before filtering: {:?}", tasks);
+    println!("Category filter: {:?}", category_filter);
+    println!("Completed filter: {:?}", completed_filter);
 
-    let filtered = tasks.into_iter()
-        .filter(|task| {
-            let completed_match = completed_filter.map_or(true, |value| (task.completed != 0) == value);
-            let category_match = category_filter.as_ref().map_or(true, |cat| &task.category == cat);
-            completed_match && category_match
-        })
-        .collect();
-    Ok(filtered)
+
+    // CATEGORY FILTER
+    if let Some(cat_str) = category_filter {
+        if let Some(category) = Category::from_str(&cat_str) {
+            tasks.retain(|task| task.category == category);
+        }
+    }
+
+    // COMPLETED SORT
+    if let Some(completed) = completed_filter {
+        tasks.sort_by(|a, b| {
+            let a_completed = a.completed != 0;
+            let b_completed = b.completed != 0;
+            if completed {
+                b_completed.cmp(&a_completed) // completed on top
+            } else {
+                a_completed.cmp(&b_completed) // uncompleted on top
+            }
+        });
+    }
+    println!("Filtered tasks: {:?}", tasks);
+    Ok(tasks)
 }
+
+
 
 
 pub fn run() {

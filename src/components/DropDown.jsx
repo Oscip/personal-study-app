@@ -1,7 +1,7 @@
-import React, { useState, useRef, useEffect } from "react";
-import { ChevronDown, Check } from "lucide-react";
+import React, {useState, useRef, useEffect} from "react";
+import {ChevronDown, Check} from "lucide-react";
 
-export default function DropDown({ options = [], defaultOption }) {
+export default function DropDown({options = [], defaultOption, categoryValue}) {
     const [isOpen, setIsOpen] = useState(false);
     const [selected, setSelected] = useState(defaultOption || options[0]);
     const dropdownRef = useRef(null);
@@ -9,6 +9,7 @@ export default function DropDown({ options = [], defaultOption }) {
     const toggleOpen = () => setIsOpen(!isOpen);
     const handleSelect = (option) => {
         setSelected(option);
+        categoryValue({category: option});
         setIsOpen(false);
     };
 
@@ -34,7 +35,7 @@ export default function DropDown({ options = [], defaultOption }) {
           ${isOpen ? "border border-black bg-white/70" : "border border-transparent bg-transparent"}`}
             >
                 <span className="capitalize pl-50">{selected}</span>
-                <ChevronDown className="h-4 w-4" />
+                <ChevronDown className="h-4 w-4"/>
             </button>
 
             {isOpen && (
@@ -46,7 +47,7 @@ export default function DropDown({ options = [], defaultOption }) {
                             className="flex items-center justify-between px-3 py-2 cursor-pointer hover:bg-gray-100/70"
                         >
                             <span className="capitalize">{option}</span>
-                            {selected === option && <Check className="h-4 w-4" />}
+                            {selected === option && <Check className="h-4 w-4"/>}
                         </li>
                     ))}
                 </ul>

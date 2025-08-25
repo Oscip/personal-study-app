@@ -1,7 +1,21 @@
 import DropDown from "./DropDown.jsx";
-import React from "react";
+import React, {useState} from "react";
 import SortArrow from "./SortArrow.jsx";
-export default function FilterTasks() {
+
+export default function FilterTasks({filterValue}) {
+    const [completed, setCompleted] = useState(false);
+    const [category, setCategory] = useState("All");
+
+    const checkCompleted = ({completed}) => {
+        setCompleted(completed);
+        filterValue({completed, category});
+    }
+
+    const checkCategory = ({category}) => {
+        setCategory(category);
+        filterValue({completed, category});
+    }
+
 
     return (
         <>
@@ -9,7 +23,7 @@ export default function FilterTasks() {
                 <div className="task-header">
                     <div className="left-panel">
                         <div className="arrow-filter-container">
-                            <SortArrow text="Completed"/>
+                            <SortArrow text="Completed" completedValue={checkCompleted}/>
                         </div>
                     </div>
                     <div className="toDoItemContent">
@@ -18,7 +32,7 @@ export default function FilterTasks() {
                         </div>
                         <div className="arrow-filter-container-category" id="category-div">
                             <DropDown options={["All", "School", "Free Time", "Home"]}
-                                      defaultOption="Category"/>
+                                      defaultOption="Category" categoryValue={checkCategory}/>
                         </div>
                     </div>
                 </div>
