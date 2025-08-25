@@ -48,7 +48,7 @@ export default function DropDown({options = [], defaultOption, categoryValue}) {
                             onClick={() => handleSelect(option)}
                             className="flex items-center justify-between px-3 py-2 cursor-pointer hover:bg-gray-100/70"
                         >
-                            <span className="capitalize">{option}</span>
+                            <p className="capitalize">{option}</p>
                             {selected === option && <Check className="h-4 w-4"/>}
                         </li>
                     ))}
