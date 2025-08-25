@@ -166,14 +166,13 @@ export default function ToDo({filterValue}) {
             console.log(`This worked ${index}`);
         });
         const completeButton = document.createElement("button");
-        completeButton.id = "completeButton";
-        completeButton.className = "smoothButton completeButton";
+        completeButton.id = "completeButtonModal";
+        completeButton.className = "smoothButton completeButton buttonSize";
         completeButton.textContent = "Uncompleted";
         completeButton.onclick = () => onClickCompleteButton();
         const createTaskCreaterButton = document.createElement("button");
-        createTaskCreaterButton.className = "smoothButton";
+        createTaskCreaterButton.className = "smoothButton createButton buttonSize";
         createTaskCreaterButton.textContent = "Create";
-        createTaskCreaterButton.id = "createButton";
         createModalUI.appendChild(createSelectionDiv);
         createModalUI.appendChild(completeButton);
         createModalUI.appendChild(createTaskCreaterButton);
@@ -216,13 +215,12 @@ export default function ToDo({filterValue}) {
             }
         )
         const createSaveButton = document.createElement("button");
-        createSaveButton.className = "smoothButton";
+        createSaveButton.className = "smoothButton saveButton buttonSize";
         createSaveButton.textContent = "Save";
-        createSaveButton.id = "saveButton";
         createSaveButton.onclick = () => updateModal(id, completed, category);
         createModalUI.appendChild(createSaveButton);
         const createDeleteButton = document.createElement("button");
-        createDeleteButton.className = "smoothButton";
+        createDeleteButton.className = "smoothButton deleteButton buttonSize";
         createDeleteButton.textContent = "Delete";
         createDeleteButton.id = "deleteButton";
         createDeleteButton.onclick = () => onDeleteButton(id);
@@ -256,7 +254,7 @@ export default function ToDo({filterValue}) {
     }
 
     const onClickCompleteButton = () => {
-        const completeButton = document.getElementById("completeButton");
+        const completeButton = document.getElementById("completeButtonModal");
         if (completeButton.textContent === "Uncompleted") {
             completeButton.style.backgroundColor = "var(--success)";
             completeButton.textContent = "Completed";

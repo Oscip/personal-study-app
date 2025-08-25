@@ -1,10 +1,11 @@
-@import url('https://fonts.googleapis.com/css2?family=Gugi&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 @import "tailwindcss";
 
 
 :root {
     --primary: #2a2a2a;
     --secondary: #bdbdbd;
+    --success: #79ff67;
     --danger: #ff4f4f;
     --white: #ffffff;
     --gray: #9b9b9b;
@@ -18,6 +19,10 @@
 body {
     background-color: var(--beige);
     margin: 0px;
+}
+
+* {
+    font-family: 'Roboto', cursive;
 }
 
 .body-replacement {
@@ -54,7 +59,7 @@ body {
     }
 
     .toDoButtons button {
-        height: 50px;
+        height: 52px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -371,6 +376,7 @@ body {
     position: relative;
     overflow: hidden;
     font-weight: bold;
+    height: 52px;
 }
 
 .smoothButton::after {
@@ -419,6 +425,8 @@ body {
 
 .completeButton {
     background-color: var(--danger);
+    width: 13em;
+    margin-bottom: 20px;
 }
 
 .sound-container {
@@ -536,6 +544,16 @@ body {
 
 .selectionCategory {
     font-size: clamp(1em, 2vw, 1.25em);
+}
+
+.buttonSize {
+    width: 13em;
+}
+
+.saveButton {
+    background-color: var(--black);
+    margin: 20px 0 10px;
+
 }
 
 
