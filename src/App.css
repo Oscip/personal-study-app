@@ -69,14 +69,6 @@ body {
 
 }
 
-.container {
-    display: flex;
-    width: 100%;
-    flex-wrap: nowrap;
-    align-items: flex-start;
-    gap: 10px;
-}
-
 .left-panel {
     flex: 0 0 20%;
     display: flex;
@@ -88,19 +80,9 @@ body {
     padding-left: 25px;
 }
 
-.right-panel {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
 @media (max-width: 768px) {
-    .container {
-        flex-direction: column;
-    }
 
-    .left-panel,
-    .right-panel {
+    .left-panel {
         width: 100%;
         flex: none;
     }

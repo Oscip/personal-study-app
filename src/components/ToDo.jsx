@@ -15,6 +15,7 @@ export default function ToDo({filterValue}) {
             console.log("Fetching filtered tasks with filter:", filterValue);
             if (filterValue.completed === null) {
                 filterValue.completed = true;
+                
             }
             const result = await invoke("filter_tasks", {
                 completedFilter: filterValue.completed,
