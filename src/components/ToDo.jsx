@@ -303,21 +303,24 @@ export default function ToDo({filterValue}) {
                             </label>
                         </div>
                         <div className="toDoItemContent">
+                            <div className="dropdownDiv">
+                                <div className="selectContainer">
+                                    <select
+                                        name="selectCategory"
+                                        className="selectCategory"
+                                        value={task.category === "FreeTime" ? "Free Time" : task.category}
+                                        onChange={(event) => onCategoryChange(task.id, event)}
+                                    >
+                                        {Object.values(Category).map((category) => (
+                                            <option key={category} value={category}>{category}</option>
+                                        ))}
+                                    </select>
+                                    <div className="select-arrow"></div>
+                                </div>
+                            </div>
                             <div className="toDoText">
                                 <strong>{task.title}</strong>
                                 <p>{task.description}</p>
-                            </div>
-                            <div className="selectContainer">
-                                <select
-                                    className={"selectCategory"}
-                                    value={task.category === "FreeTime" ? "Free Time" : task.category}
-                                    onChange={(event) => onCategoryChange(task.id, event)}
-                                >
-                                    {Object.values(Category).map((category) => (
-                                        <option key={category} value={category}>{category}</option>
-                                    ))}
-                                </select>
-                                <div className="select-arrow"></div>
                             </div>
                             <div className="toDoButtons">
                                 <button className="smoothButton updateButton"

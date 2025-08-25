@@ -38,7 +38,7 @@ body {
 
 .toDoItemContent {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 0.25fr 2fr 1fr;
     align-items: center;
     column-gap: 20px;
     width: 100%;
@@ -84,6 +84,10 @@ body {
     align-items: center;
 }
 
+#left-panel-header {
+    padding-left: 25px;
+}
+
 .right-panel {
     flex: 1;
     display: flex;
@@ -100,11 +104,6 @@ body {
         width: 100%;
         flex: none;
     }
-}
-
-
-.toDoItemContent:hov er {
-    transform: scale(1.02);
 }
 
 @media (max-width: 500px) {
@@ -474,11 +473,6 @@ body {
     justify-content: flex-start;
 }
 
-.div-width {
-    width: calc(100% - 40px);
-    padding-left: 40px;
-}
-
 .selectContainerFilter {
     position: relative;
     width: auto;
@@ -501,11 +495,12 @@ body {
     justify-content: center;
     gap: 0.5em;
     width: 200px;
-    margin: 0px 17px;
+    margin: 0px 20px;
 }
 
-.arrow-filter-container:hover {
+.arrow-filter-container:hover, .arrow-filter-container-category:hover {
     transform: scale(1.02);
+    z-index: 10;
 }
 
 
@@ -556,6 +551,10 @@ body {
 
 }
 
+.dropdownDiv {
+    display:flex;
+    justify-content: center;
+}
 
 
 

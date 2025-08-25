@@ -19,20 +19,22 @@ export default function FilterTasks({filterValue}) {
 
     return (
         <>
-            <div className="div-width">
+            <div>
                 <div className="task-header">
-                    <div className="left-panel">
+                    <div className="left-panel" id="left-panel-header">
                         <div className="arrow-filter-container">
                             <SortArrow text="Completed" completedValue={checkCompleted}/>
                         </div>
                     </div>
                     <div className="toDoItemContent">
+                        <div className="dropdownDiv">
+                            <div className="arrow-filter-container-category" id="category-div">
+                                <DropDown options={["All", "School", "Free Time", "Home"]}
+                                          defaultOption="Category" categoryValue={checkCategory}/>
+                            </div>
+                        </div>
                         <div className="arrow-filter-container">
                             <p className="task-header-text">Description</p>
-                        </div>
-                        <div className="arrow-filter-container-category" id="category-div">
-                            <DropDown options={["All", "School", "Free Time", "Home"]}
-                                      defaultOption="Category" categoryValue={checkCategory}/>
                         </div>
                     </div>
                 </div>
