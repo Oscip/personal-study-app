@@ -34,7 +34,9 @@ export default function DropDown({options = [], defaultOption, categoryValue}) {
                 className={`flex w-full items-center justify-between px-3 py-2 rounded-md transition-colors
           ${isOpen ? "border border-black bg-white/70" : "border border-transparent bg-transparent"}`}
             >
-                <span className="capitalize selectionCategory">{selected}</span>
+                <div className={"w-full"}>
+                    <span className="capitalize selectionCategory">{selected}</span>
+                </div>
                 <ChevronDown className="h-4 w-4"/>
             </button>
 
