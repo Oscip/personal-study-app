@@ -534,8 +534,8 @@ body {
     box-sizing: border-box;
 }
 
-.pl-50 {
-    padding-left: 50px;
+.selectionCategory {
+    font-size: clamp(1em, 2vw, 1.25em);
 }
 
 
