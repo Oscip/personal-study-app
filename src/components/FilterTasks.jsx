@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import SortArrow from "./SortArrow.jsx";
 
 export default function FilterTasks({filterValue}) {
-    const [completed, setCompleted] = useState(false);
+    const [completed, setCompleted] = useState(true);
     const [category, setCategory] = useState("All");
 
     const checkCompleted = ({completed}) => {

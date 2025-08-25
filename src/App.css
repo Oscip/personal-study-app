@@ -81,7 +81,6 @@ body {
 }
 
 @media (max-width: 768px) {
-
     .left-panel {
         width: 100%;
         flex: none;
@@ -486,7 +485,6 @@ body {
 }
 
 
-
 .task-header-text {
     font-size: clamp(1em, 2vw, 1.25em);
     margin: 0;
@@ -534,7 +532,7 @@ body {
 }
 
 .dropdownDiv {
-    display:flex;
+    display: flex;
     justify-content: center;
 }
 
