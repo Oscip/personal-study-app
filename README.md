@@ -1,66 +1,194 @@
 # PersonalStudyApp
 
-**PersonalStudyApp** is a productivity-focused desktop application designed and built entirely by **Oscar Peach**. The app is tailored for personal study routines and helps with task management and scheduling. It integrates Spotify for music, Google Calendar for event management, and a full-featured Todo list with a MySQL backend.
+A focused, all-in-one **desktop study companion**. Plan tasks, sync your calendar, and listen to music — all in a single window. Built with **React + Vite** and shipped as a native desktop app via **Tauri** with a **MySQL** backend.
+
+> Created and maintained by **Oscar Peach**
 
 ---
 
 ## ✨ Features
 
-- **Spotify Integration**: Embedded player to enjoy music while studying.
-- **Google Calendar Integration**: View and manage events directly within the app.
-- **Todo List**: Create, update, and delete tasks with persistent backend storage.
-- **MySQL Backend**: Manages and stores tasks/data efficiently.
-- **User Interface**: Clean, modern, and user-friendly design.
+- **Todo Manager (CRUD + persistence)**  
+  Create, update, complete, and delete tasks. Data is persisted in **MySQL**.
+- **Google Calendar Integration**  
+  See events without leaving the app (designed for study planning).
+- **Soundcloud / Music Integration**  
+  Play music to help you focus while studying.
+- **Modern, clean UI**  
+  Fast startup, native window chrome, and smooth interactions powered by **Vite + React** inside **Tauri**.
 
 ---
 
-## 🧰 Tech Stack
+## 🧱 Tech Stack
 
-- **Frontend**: [React](https://reactjs.org/) + [Vite](https://vitejs.dev/)
-- **Desktop Framework**: [Tauri](https://tauri.app/)
-- **Backend**: [MySQL](https://www.mysql.com/)
-- **Languages**: HTML, CSS, JS, JSX (Frontend), Rust, SQL (Backend)
+- **Frontend:** React + Vite (HTML, CSS, JavaScript/JSX)
+- **Desktop Runtime:** Tauri (Rust)
+- **Backend / Storage:** MySQL (SQL schema included in repo)
 
 ---
 
-## ⚙️ Setup & Usage
+## 📦 Repository Layout
 
-### Prerequisites
+- `src/` – React UI (components, hooks, styles)
+- `src-tauri/` – Tauri app (Rust commands, config, bundling)
+- `StudyAppToDoList.sql` – MySQL schema for the Todo feature
+- `index.html`, `vite.config.js`, `package.json` – Vite/React entry and tooling
 
-- [Node.js](https://nodejs.org/) (v16 or newer)
-- [Rust and Cargo](https://rustup.rs)
-- [MySQL Server](https://www.mysql.com/)
+---
 
-### Recommended IDE Setup
+## 🚀 Quick Start
 
-- **IntelliJ** with:
-  - [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) extension
-  - [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+### 1) Prerequisites
+- **Node.js** (v16+)
+- **Rust + Cargo** (for Tauri)
+- **MySQL Server** (local or container)
+- **Visual Studio Build Tools** (Windows only, for compiling Rust)
 
-### Installation
-
+### 2) Clone & Install
 ```bash
-# Clone the repository
-https://github.com/Oscip/PersonalStudyApp.git
-cd PersonalStudyApp
+git clone https://github.com/Oscip/personal-study-app.git
+cd personal-study-app
+git checkout development
 
-# Install frontend dependencies
+# install frontend dependencies
 npm install
 ```
+## 3) Run the MySQL Server
+If you don’t have MySQL installed, you can run it quickly with Docker:
+```bash
+  docker run --name mysql -e MYSQL_ROOT_PASSWORD=root -p 3306:3306 -d mysql:8
+```
 
-### Configure MySQL Backend
+## 4) Database Setup (MySQL)
 
-- Ensure a MySQL server is running
-- Create a database and configure credentials in the backend config file (e.g., `.env` or directly in code if applicable)
+1. Start MySQL (local or Docker).
 
-### Run the App
+2. Create a database user and database (example):
+```sql
+CREATE DATABASE StudyAppToDoList;
+CREATE USER 'study_user'@'localhost' IDENTIFIED BY 'strong_password';
+GRANT ALL PRIVILEGES ON StudyAppToDoList.* TO 'study_user'@'localhost';
+FLUSH PRIVILEGES;
+```
+
+3. Import the schema:
 
 ```bash
-npm run tauri dev
+  mysql -u study_user -p StudyAppToDoList < StudyAppToDoList.sql
 ```
+
+
+
+## 5) Run the Desktop App (Dev)
+Go into the project's root directory and run 
+```bash
+  npm run tauri dev
+```
+
+
+
+This starts the Vite dev server and launches the Tauri window.
 
 ---
 
-## © Credit
+## Installation
 
-Made by **Oscar Peach**
+### Running the App on Windows
+
+To use this app as a standalone desktop application:
+
+1. Build the application:
+   ```bash
+   npm run tauri build
+   ```
+
+2. After the build finishes, the installer and executable will be located in:
+    ```bash
+    src-tauri/target/release/bundle/msi/   (installer)
+    src-tauri/target/release/bundle/app/   (portable .exe)
+    ```
+
+3. Install or run the app:
+
+Double-click the .msi file to install the application on your system.
+
+Or run the .exe file directly as a portable version (no installation needed).
+
+---
+
+
+## 🏗️ Building for Production
+
+Tauri makes small, native installers.
+
+Storage: 15–30MB depending on platform.
+
+### build optimized frontend + native app bundle
+```bash
+npm run build
+npm run tauri build
+```
+
+The installer/binary will be generated under src-tauri/target/ (platform-specific). (Standard Tauri behavior.)
+
+
+---
+
+
+## 🔌 Integrations
+### Google Calendar
+
+- View your events directly in the app.
+
+- Requires Google API credentials (set up via Google Cloud Console).
+
+
+### Soundcloud / Music
+
+- Embedded music for focus.
+
+- No login required; uses public Soundcloud tracks.
+
+---
+
+## 📸 Screenshots
+
+### Dashboard / Home
+
+![Home](docs/images/to-do-list.png)
+
+### Task CRUD
+
+![Tasks](docs/images/create.png)
+
+![Tasks](docs/images/edit.png)
+
+### Calendar View
+
+![Calendar](docs/images/google-calendar.png)
+
+### Music
+
+![Player](docs/images/soundcloud.png)
+
+---
+
+## 🎥 Short Demo Video
+
+- Record a 30–60s screen capture (e.g., OBS, QuickTime).
+
+- Show: launching app → creating a task → viewing calendar → starting music → marking task complete.
+
+- Upload to GitHub Releases or an unlisted video host, then link:
+
+---
+
+## 👤 Author
+
+**Oscar Peach** — creator of personal-study-app.
+The repository description and README credit Oscar as the author.
+
+---
+
+## 📜 License
+This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
