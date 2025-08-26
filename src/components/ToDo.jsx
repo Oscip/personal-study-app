@@ -110,8 +110,9 @@ export default function ToDo({filterValue}) {
     }
 
     const createModal = (title, description, category) => {
-        const completeButton = document.getElementById("completeButton");
+        const completeButton = document.getElementById("completeButtonModal");
         let completed = 0;
+        console.log(title, description , completed, category);
         if (completeButton.textContent === "Completed") {
             completed = 1;
             console.log("it worked");
@@ -124,6 +125,7 @@ export default function ToDo({filterValue}) {
             category = "FreeTime";
         }
         console.log(category);
+
         create_task(title, description, completed, category);
         fetchFilteredTasks();
         closeModal();
@@ -176,11 +178,13 @@ export default function ToDo({filterValue}) {
         createTaskCreaterButton.textContent = "Create";
         createModalUI.appendChild(createSelectionDiv);
         createModalUI.appendChild(completeButton);
+        createTaskCreaterButton.onclick = () => {
+            const title = document.getElementById("createInputText1").value;
+            const description = document.getElementById("createInputText2").value;
+            const selection = document.getElementById("createSelection").value;
+            createModal(title, description, selection);
+        };
         createModalUI.appendChild(createTaskCreaterButton);
-        const title = document.getElementById("createInputText1");
-        const description = document.getElementById("createInputText2");
-        const selection = document.getElementById("createSelection");
-        createTaskCreaterButton.onclick = () => createModal(title.value, description.value, selection.value);
     }
 
     const updateModal = (id, completed, category) => {
