@@ -53,13 +53,19 @@ git checkout development
 # install frontend dependencies
 npm install
 ```
-## 3) Run the MySQL Server
+
+### 3) Environment Variables
+Create a `.env` file in the root directory with the following content (adjust values as needed):
+```env
+VITE_GOOGLE_CALENDAR_URL="YOUR_GOOGLE_CALENDAR_API_URL"
+```
+### 4) Run the MySQL Server
 If you don’t have MySQL installed, you can run it quickly with Docker:
 ```bash
   docker run --name mysql -e MYSQL_ROOT_PASSWORD=root -p 3306:3306 -d mysql:8
 ```
 
-## 4) Database Setup (MySQL)
+### 5) Database Setup (MySQL)
 
 1. Start MySQL (local or Docker).
 
@@ -79,13 +85,11 @@ FLUSH PRIVILEGES;
 
 
 
-## 5) Run the Desktop App (Dev)
+### 6) Run the Desktop App (Dev)
 Go into the project's root directory and run 
 ```bash
   npm run tauri dev
 ```
-
-
 
 This starts the Vite dev server and launches the Tauri window.
 
@@ -98,15 +102,15 @@ This starts the Vite dev server and launches the Tauri window.
 To use this app as a standalone desktop application:
 
 1. Build the application:
-   ```bash
-   npm run tauri build
-   ```
+```bash
+npm run tauri build
+```
 
 2. After the build finishes, the installer and executable will be located in:
-    ```bash
-    src-tauri/target/release/bundle/msi/   (installer)
-    src-tauri/target/release/bundle/app/   (portable .exe)
-    ```
+```bash
+src-tauri/target/release/bundle/msi/   (installer)
+src-tauri/target/release/bundle/app/   (portable .exe)
+```
 
 3. Install or run the app:
 
@@ -151,35 +155,32 @@ The installer/binary will be generated under src-tauri/target/ (platform-specifi
 
 ---
 
-## 📸 Screenshots
 
-### Dashboard / Home
+## Visualisation
+### 📸 Screenshots
+
+#### Dashboard / Home
 
 ![Home](docs/images/to-do-list.png)
 
-### Task CRUD
+#### Task CRUD
 
 ![Tasks](docs/images/create.png)
 
 ![Tasks](docs/images/edit.png)
 
-### Calendar View
+#### Calendar View
 
 ![Calendar](docs/images/google-calendar.png)
 
-### Music
+#### Music
 
 ![Player](docs/images/soundcloud.png)
 
----
 
-## 🎥 Short Demo Video
+### 🎥 Short Demo Video
 
-- Record a 30–60s screen capture (e.g., OBS, QuickTime).
-
-- Show: launching app → creating a task → viewing calendar → starting music → marking task complete.
-
-- Upload to GitHub Releases or an unlisted video host, then link:
+https://github.com/user-attachments/assets/11324ae4-67b1-40f8-b33a-3753789e94a4
 
 ---
 
