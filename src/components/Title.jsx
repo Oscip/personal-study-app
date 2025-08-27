@@ -4,7 +4,6 @@ export default function Title() {
             <div className="title-container">
                 <h1>Study Time</h1>
             </div>
-            <div className="gradient-block"></div>
         </div>
 
     )

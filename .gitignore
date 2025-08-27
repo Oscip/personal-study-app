@@ -52,3 +52,6 @@ pids
 debug.log
 TODO.md
 .gitignore
+
+# environment variables
+.env

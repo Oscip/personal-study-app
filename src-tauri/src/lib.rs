@@ -80,6 +80,43 @@ fn delete_task(id: i32) -> Result<(), String> {
     Ok(())
 }
 
+#[tauri::command]
+fn filter_tasks(
+    completed_filter: Option<bool>,
+    category_filter: Option<String>,
+) -> Result<Vec<Task>, String> {
+    let mut tasks = get_tasks()?;
+    println!("All tasks before filtering: {:?}", tasks);
+    println!("Category filter: {:?}", category_filter);
+    println!("Completed filter: {:?}", completed_filter);
+
+
+    // CATEGORY FILTER
+    if let Some(cat_str) = category_filter {
+        if let Some(category) = Category::from_str(&cat_str) {
+            tasks.retain(|task| task.category == category);
+        }
+    }
+
+    // COMPLETED SORT
+    if let Some(completed) = completed_filter {
+        tasks.sort_by(|a, b| {
+            let a_completed = a.completed != 0;
+            let b_completed = b.completed != 0;
+            if completed {
+                b_completed.cmp(&a_completed) // completed on top
+            } else {
+                a_completed.cmp(&b_completed) // uncompleted on top
+            }
+        });
+    }
+    println!("Filtered tasks: {:?}", tasks);
+    Ok(tasks)
+}
+
+
+
+
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
@@ -87,7 +124,8 @@ pub fn run() {
             get_tasks,
             create_task,
             update_task,
-            delete_task
+            delete_task,
+            filter_tasks
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

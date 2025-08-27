@@ -1,12 +1,17 @@
-@import url('https://fonts.googleapis.com/css2?family=Gugi&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans+Code:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import "tailwindcss";
+
 
 :root {
     --primary: #2a2a2a;
     --secondary: #bdbdbd;
+    --success: #79ff67;
     --danger: #ff4f4f;
     --white: #ffffff;
     --gray: #9b9b9b;
     --black: #000000;
+    --light-grey: #f9f9f9;
     --beige: #EAE3C9;
     --blue: #2196F3;
     --navyblue: #002952;
@@ -14,8 +19,12 @@
 
 
 body {
-    background-color: var(--beige);
+    background-color: var(--light-grey);
     margin: 0px;
+}
+
+* {
+    font-family: 'Google Sans Code', monospace;
 }
 
 .body-replacement {
@@ -31,7 +40,7 @@ body {
 
 .toDoItemContent {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr; /* 3 equal columns */
+    grid-template-columns: 0.25fr 2fr 1fr;
     align-items: center;
     column-gap: 20px;
     width: 100%;
@@ -41,33 +50,25 @@ body {
 
 .toDoButtons {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* 2 equal columns */
+    grid-template-columns: 1fr 1fr;
     gap: 10px;
     width: 100%;
 }
 
 @Media (max-width: 1100px) {
     .toDoButtons {
-        grid-template-columns: 1fr; /* one column for small screens */
+        grid-template-columns: 1fr;
     }
 
     .toDoButtons button {
-        height: 50px;
+        height: 52px;
         display: flex;
-        align-items: center; /* vertical center */
-        justify-content: center; /* horizontal center */
+        align-items: center;
+        justify-content: center;
         margin-bottom: 0px;
         margin: 5px 0;
     }
 
-}
-
-.container {
-    display: flex;
-    width: 100%;
-    flex-wrap: nowrap;
-    align-items: flex-start;
-    gap: 10px;
 }
 
 .left-panel {
@@ -77,27 +78,15 @@ body {
     align-items: center;
 }
 
-.right-panel {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+#left-panel-header {
+    padding-left: 25px;
 }
 
 @media (max-width: 768px) {
-    .container {
-        flex-direction: column;
-    }
-
-    .left-panel,
-    .right-panel {
+    .left-panel {
         width: 100%;
         flex: none;
     }
-}
-
-
-.toDoItemContent:hover {
-    transform: scale(1.02);
 }
 
 @media (max-width: 500px) {
@@ -110,27 +99,26 @@ body {
 .toDoText {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center title horizontally */
-    text-align: justify; /* Makes block-style text look aligned */
-    max-width: 300px; /* Control width so lines have similar length */
-    margin: 0 auto; /* Center the whole block */
+    align-items: center;
+    text-align: justify;
+    max-width: 300px;
+    margin: 0 auto;
 }
 
 .toDoText strong {
-    margin-bottom: 0.5rem; /* Space between title and text */
-    text-align: center; /* Title itself centered */
+    margin-bottom: 0.5rem;
+    text-align: center;
 }
 
 .toDoText p {
     margin: 0;
-    text-align: justify; /* Block-style paragraph */
+    text-align: justify;
 }
 
 
 .checkbox-container {
     display: inline-block;
     position: relative;
-    padding-left: 35px;
     padding-bottom: 25px;
     cursor: pointer;
     font-size: 16px;
@@ -161,8 +149,8 @@ body {
     content: "";
     position: absolute;
     display: none;
-    left: 9px;
-    top: 5px;
+    left: 10px;
+    top: 6px;
     width: 5px;
     height: 10px;
     border: solid white;
@@ -171,12 +159,8 @@ body {
 }
 
 .custom-checkbox:checked ~ .checkmark {
-    background-color: var(--blue);
+    background-color: var(--navyblue);
     box-shadow: 0 3px 7px rgba(33, 150, 243, 0.3);
-}
-
-.custom-checkbox:checked ~ .checkmark:after {
-    display: block;
 }
 
 @keyframes checkAnim {
@@ -191,24 +175,24 @@ body {
 
 .custom-checkbox:checked ~ .checkmark:after {
     animation: checkAnim 0.1s forwards;
+    display: block;
 }
 
-/* Custom Select Container */
 .selectContainer {
     position: relative;
-    width: 200px; /* Adjust width as needed */
+    width: 200px;
     margin: 20px;
 }
 
-/* Select Box Styling */
+
 .selectCategory {
-    appearance: none; /* Remove default arrow */
-    -webkit-appearance: none; /* For Safari */
-    -moz-appearance: none; /* For Firefox */
+    position: relative;
+    z-index: 1;
+    appearance: none;
     width: 100%;
     padding: 12px 16px;
     font-size: 16px;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Google Sans Code', monospace;
     color: #333;
     background-color: #f9f9f9;
     border: 2px solid #ddd;
@@ -218,19 +202,16 @@ body {
     transition: all 0.3s ease;
 }
 
-/* Hover Effect */
 .selectCategory:hover {
     border-color: #007bff;
     box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
 }
 
-/* Focus Effect */
 .selectCategory:focus {
     border-color: #007bff;
     box-shadow: 0 0 12px rgba(0, 123, 255, 0.5);
 }
 
-/* Custom Arrow */
 .select-arrow {
     position: absolute;
     top: 50%;
@@ -245,12 +226,10 @@ body {
     transition: transform 0.3s ease;
 }
 
-/* Rotate Arrow on Focus */
 .selectCategory:focus + .select-arrow {
     transform: translateY(-50%) rotate(180deg);
 }
 
-/* Dropdown Options Styling */
 .selectCategory option {
     padding: 12px 16px;
     background-color: #fff;
@@ -259,7 +238,6 @@ body {
 }
 
 
-/* Responsive Design */
 @media (max-width: 600px) {
     .selectContainer {
         width: 100%;
@@ -380,6 +358,7 @@ body {
     position: relative;
     overflow: hidden;
     font-weight: bold;
+    height: 52px;
 }
 
 .smoothButton::after {
@@ -419,7 +398,7 @@ body {
 }
 
 .updateButton {
-    background-color: var(--gray);
+    background-color: var(--navyblue);
 }
 
 .deleteButton {
@@ -428,6 +407,8 @@ body {
 
 .completeButton {
     background-color: var(--danger);
+    width: 13em;
+    margin-bottom: 20px;
 }
 
 .sound-container {
@@ -453,25 +434,108 @@ body {
 .title-container {
     display: flex;
     justify-content: center;
-    background: var(--navyblue);
-    height: 0px;
+    background: var(--light-grey);
+    width: 100%;
+    height: 200px;
 }
 
 .title-container h1 {
     text-shadow: 1px 1px var(--white);
-    color: var(--beige);
+    color: var(--navyblue);
     font-size: 4rem;
-    font-family: 'gugi';
+    font-family: 'Roboto', monospace;
 }
 
 .gradient-block {
-    width: 100%;
-    height: 200px;
-    background: linear-gradient(to bottom, var(--black), var(--beige));
+
+}
+
+.task-header {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.selectContainerFilter {
+    position: relative;
+    width: auto;
+    max-width: 100%;
+    margin: 20px;
+    text-align: center;
+}
+
+.arrow-filter-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+    width: auto;
+}
+
+.arrow-filter-container-category {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
+    width: 200px;
+    margin: 0px 20px;
+}
+
+.arrow-filter-container:hover, .arrow-filter-container-category:hover {
+    transform: scale(1.02);
+    z-index: 10;
 }
 
 
+.task-header-text {
+    font-size: clamp(1em, 2vw, 1.25em);
+    margin: 0;
+}
 
+
+.select-arrow-filter {
+    border-left: 0.4em solid transparent;
+    border-right: 0.4em solid transparent;
+    border-top: 0.5em solid var(--black);
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.select-arrow-filter.asc {
+    transform: rotate(0deg);
+}
+
+.select-arrow-filter.desc {
+    transform: rotate(180deg);
+}
+
+.right-panel-filter {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    column-gap: 20px;
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.selectionCategory {
+    font-size: clamp(1em, 2vw, 1.25em);
+}
+
+.buttonSize {
+    width: 13em;
+}
+
+.saveButton {
+    background-color: var(--black);
+    margin: 20px 0 10px;
+
+}
+
+.dropdownDiv {
+    display: flex;
+    justify-content: center;
+}
 
 
 

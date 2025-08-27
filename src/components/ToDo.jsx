@@ -2,7 +2,7 @@ import {invoke} from "@tauri-apps/api/core";
 import {useEffect, useState} from "react";
 import React from "react";
 
-export default function ToDo() {
+export default function ToDo({filterValue}) {
     const [tasks, setTasks] = useState([]);
     const Category = {
         School: "School",
@@ -10,10 +10,31 @@ export default function ToDo() {
         Home: "Home",
     }
 
+    async function fetchFilteredTasks() {
+        try {
+            console.log("Fetching filtered tasks with filter:", filterValue);
+            if (filterValue.completed === null) {
+                filterValue.completed = true;
+                
+            }
+            const result = await invoke("filter_tasks", {
+                completedFilter: filterValue.completed,
+                categoryFilter: filterValue.category
+            });
+            console.log("Filtered option", filterValue.category);
+            console.log("Filtered tasks fetched: ", result);
+            setTasks(result);
+        } catch (error) {
+            console.error("Error fetching tasks: ", error);
+        }
+    }
+
+
+
     const modal = () => {
         const toDoDiv = document.getElementById("toDoDiv");
         toDoDiv.style.display = "none";
-        const container = document.getElementsByClassName("container")[0];
+        const container = document.getElementsByClassName("root")[0];
         const createModalFrame = document.createElement("div");
         createModalFrame.id = "createModalFrame";
         createModalFrame.className = "modalFrame";
@@ -81,7 +102,7 @@ export default function ToDo() {
     }
 
     const closeModal = () => {
-        const container = document.getElementsByClassName("container")[0];
+        const container = document.getElementsByClassName("root")[0];
         const modalFrame = document.getElementById("createModalFrame");
         const toDoDiv = document.getElementById("toDoDiv");
         container.removeChild(modalFrame);
@@ -89,8 +110,9 @@ export default function ToDo() {
     }
 
     const createModal = (title, description, category) => {
-        const completeButton = document.getElementById("completeButton");
+        const completeButton = document.getElementById("completeButtonModal");
         let completed = 0;
+        console.log(title, description , completed, category);
         if (completeButton.textContent === "Completed") {
             completed = 1;
             console.log("it worked");
@@ -103,8 +125,9 @@ export default function ToDo() {
             category = "FreeTime";
         }
         console.log(category);
+
         create_task(title, description, completed, category);
-        retrieve_tasks();
+        fetchFilteredTasks();
         closeModal();
     }
 
@@ -146,28 +169,29 @@ export default function ToDo() {
             console.log(`This worked ${index}`);
         });
         const completeButton = document.createElement("button");
-        completeButton.id = "completeButton";
-        completeButton.className = "smoothButton completeButton";
+        completeButton.id = "completeButtonModal";
+        completeButton.className = "smoothButton completeButton buttonSize";
         completeButton.textContent = "Uncompleted";
         completeButton.onclick = () => onClickCompleteButton();
         const createTaskCreaterButton = document.createElement("button");
-        createTaskCreaterButton.className = "smoothButton";
+        createTaskCreaterButton.className = "smoothButton createButton buttonSize";
         createTaskCreaterButton.textContent = "Create";
-        createTaskCreaterButton.id = "createButton";
         createModalUI.appendChild(createSelectionDiv);
         createModalUI.appendChild(completeButton);
+        createTaskCreaterButton.onclick = () => {
+            const title = document.getElementById("createInputText1").value;
+            const description = document.getElementById("createInputText2").value;
+            const selection = document.getElementById("createSelection").value;
+            createModal(title, description, selection);
+        };
         createModalUI.appendChild(createTaskCreaterButton);
-        const title = document.getElementById("createInputText1");
-        const description = document.getElementById("createInputText2");
-        const selection = document.getElementById("createSelection");
-        createTaskCreaterButton.onclick = () => createModal(title.value, description.value, selection.value);
     }
 
     const updateModal = (id, completed, category) => {
         const titleInput = document.getElementById("updateInput1");
         const descriptionInput = document.getElementById("updateInput2");
         update_task(id, titleInput.value, descriptionInput.value, completed, category);
-        retrieve_tasks();
+        fetchFilteredTasks();
         closeModal();
     }
 
@@ -196,13 +220,12 @@ export default function ToDo() {
             }
         )
         const createSaveButton = document.createElement("button");
-        createSaveButton.className = "smoothButton";
+        createSaveButton.className = "smoothButton saveButton buttonSize";
         createSaveButton.textContent = "Save";
-        createSaveButton.id = "saveButton";
         createSaveButton.onclick = () => updateModal(id, completed, category);
         createModalUI.appendChild(createSaveButton);
         const createDeleteButton = document.createElement("button");
-        createDeleteButton.className = "smoothButton";
+        createDeleteButton.className = "smoothButton deleteButton buttonSize";
         createDeleteButton.textContent = "Delete";
         createDeleteButton.id = "deleteButton";
         createDeleteButton.onclick = () => onDeleteButton(id);
@@ -210,12 +233,12 @@ export default function ToDo() {
     }
 
     useEffect(() => {
-        retrieve_tasks();
-    }, []);
+        fetchFilteredTasks();
+    }, [filterValue]);
 
     const onDeleteButton = (id) => {
         delete_task(id);
-        retrieve_tasks();
+        fetchFilteredTasks();
         closeModal();
     }
 
@@ -232,11 +255,11 @@ export default function ToDo() {
         console.log(description);
         console.log(completed);
         update_task(id, title, description, completed, category);
-        retrieve_tasks();
+        fetchFilteredTasks();
     }
 
     const onClickCompleteButton = () => {
-        const completeButton = document.getElementById("completeButton");
+        const completeButton = document.getElementById("completeButtonModal");
         if (completeButton.textContent === "Uncompleted") {
             completeButton.style.backgroundColor = "var(--success)";
             completeButton.textContent = "Completed";
@@ -285,21 +308,24 @@ export default function ToDo() {
                             </label>
                         </div>
                         <div className="toDoItemContent">
+                            <div className="dropdownDiv">
+                                <div className="selectContainer">
+                                    <select
+                                        name="selectCategory"
+                                        className="selectCategory"
+                                        value={task.category === "FreeTime" ? "Free Time" : task.category}
+                                        onChange={(event) => onCategoryChange(task.id, event)}
+                                    >
+                                        {Object.values(Category).map((category) => (
+                                            <option key={category} value={category}>{category}</option>
+                                        ))}
+                                    </select>
+                                    <div className="select-arrow"></div>
+                                </div>
+                            </div>
                             <div className="toDoText">
                                 <strong>{task.title}</strong>
                                 <p>{task.description}</p>
-                            </div>
-                            <div className="selectContainer">
-                                <select
-                                    className={"selectCategory"}
-                                    value={task.category === "FreeTime" ? "Free Time" : task.category}
-                                    onChange={(event) => onCategoryChange(task.id, event)}
-                                >
-                                    {Object.values(Category).map((category) => (
-                                        <option key={category} value={category}>{category}</option>
-                                    ))}
-                                </select>
-                                <div className="select-arrow"></div>
                             </div>
                             <div className="toDoButtons">
                                 <button className="smoothButton updateButton"
