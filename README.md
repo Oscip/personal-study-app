@@ -97,28 +97,30 @@ This starts the Vite dev server and launches the Tauri window.
 
 ## Installation
 
-### Running the App on Windows
+This application can be installed using either the **MSI installer** or the **NSIS installer**. Both are included in the repository under the `Installation/` folder.
 
-To use this app as a standalone desktop application:
+### 1. MSI Installer
 
-1. Build the application:
-```bash
-npm run tauri build
-```
+1. Navigate to the `Installation/msi/` folder.F
+2. Double-click the `.msi` file to launch the installer.
+3. Follow the installation wizard to install the app on your system.
+4. After installation, launch the app from the Start Menu or desktop shortcut.
 
-2. After the build finishes, the installer and executable will be located in:
-```bash
-src-tauri/target/release/bundle/msi/   (installer)
-src-tauri/target/release/bundle/app/   (portable .exe)
-```
+### 2. NSIS Installer (Optional / Portable)
 
-3. Install or run the app:
+1. Navigate to the `Installation/nsis/` folder.
+2. Double-click the `.exe` installer file to launch the NSIS installer.
+3. Follow the instructions to install or run a portable version of the app.
+   - The portable version **does not require installation** and can be run directly from any folder.
+4. Launch the app by double-clicking the `.exe` file.
 
-Double-click the .msi file to install the application on your system.
+> Both installers include the same version of the app and required files. Choose whichever installation method you prefer.
 
-Or run the .exe file directly as a portable version (no installation needed).
+### ⚠️ Note on Storage
 
----
+- The app uses **MySQL** to persist your tasks.  
+- If you want your data to be saved and synced, make sure to set up MySQL as described in the **Database Setup** section.  
+- Without MySQL, the app will still run, but your task data will **not be stored persistently**.
 
 
 ## 🏗️ Building for Production
