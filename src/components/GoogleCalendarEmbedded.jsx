@@ -1,5 +1,5 @@
 export default function GoogleCalendarEmbedded() {
-    const calendarUrl = import.meta.env.VITE_GOOGLE_CALENDAR_URL;
+    const calendarUrl = import.meta.env.VITE_APP_GOOGLE_CALENDAR_URL;
 
     return (
         <div className="calendar-container">

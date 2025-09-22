@@ -4,6 +4,7 @@ import SoundcloudEmbedded from "./components/SoundcloudEmbedded.jsx";
 import Title from "./components/Title.jsx";
 import FilterTasks from "./components/FilterTasks.jsx";
 import React, {useState} from "react";
+import Pomodoro from "./components/Pomodoro.jsx";
 
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
                 <ToDo filterValue={filter}/>
                 <SoundcloudEmbedded/>
                 <GoogleCalendarEmbedded/>
+                <Pomodoro/>
             </div>
         </div>
     );
