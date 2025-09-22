@@ -411,6 +411,12 @@ body {
     margin-bottom: 20px;
 }
 
+.roundButton {
+    background-color: var(--black);
+    width:10%;
+    border-radius: 215px;
+}
+
 .sound-container {
     display: flex;
     justify-content: center;

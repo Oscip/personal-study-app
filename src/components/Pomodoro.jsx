@@ -27,14 +27,14 @@ export default function Pomodoro() {
             <div className={"workTimer"}>
                 <h1>Work Time</h1>
                 <p>{workTime}</p>
-                <button value={"workTimer"} onClick={onButtonClickPlus}>+</button>
-                <button value={"workTimer"} onClick={onButtonClickMinus}>-</button>
+                <button className={"smoothButton roundButton"} value={"workTimer"} onClick={onButtonClickPlus}>+</button>
+                <button className={"smoothButton roundButton"} value={"workTimer"} onClick={onButtonClickMinus}>-</button>
             </div>
             <div className={"breakTimer"}>
                 <h1>Break Time</h1>
                 <p>{breakTime}</p>
-                <button value={"breakTimer"} onClick={onButtonClickPlus}>+</button>
-                <button value={"breakTimer"} onClick={onButtonClickMinus}>-</button>
+                <button className={"smoothButton roundButton"} value={"breakTimer"} onClick={onButtonClickPlus}>+</button>
+                <button className={"smoothButton roundButton"} value={"breakTimer"} onClick={onButtonClickMinus}>-</button>
             </div>
         </>
     );
