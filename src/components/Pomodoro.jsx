@@ -5,13 +5,25 @@ export default function Pomodoro() {
     const [workTime, setWorkTime] = useState(25);
     const [currentTime, setCurrentTime] = useState(0);
     const [timerRunning, setTimerRunning] = useState(false);
+    const [onBreak, setOnBreak] = useState(false);
 
     useEffect(() => {
         if (!timerRunning) return;
         const interval = setInterval(() => {
             setCurrentTime(prev => {
                 if (prev <= 1) {
-                    setTimerRunning(false);
+                    clearInterval(interval);
+                    if (onBreak) {
+                        setOnBreak(false);
+                        setTimerRunning(false);
+                        return;
+                    }
+                    else if (!onBreak) {
+                        setCurrentTime(breakTime * 60);
+                        setTimerRunning(true);
+                        setOnBreak(true);
+                    }
+
                     return 0;
                 }
                 return prev - 1;
@@ -46,7 +58,7 @@ export default function Pomodoro() {
         <>
             <div className={"timerShower"}>
                 <p>Countdown: {Math.floor(currentTime / 60)}:{("0" + (currentTime % 60)).slice(-2)}</p>
-                <button onClick={onButtonClickStart}>Start</button>
+                <button className={"smoothButton roundButton"} onClick={onButtonClickStart}>Start</button>
             </div>
             <div className={"timerAdjuster"}>
                 <div className={"workTimer"}>
@@ -66,7 +78,6 @@ export default function Pomodoro() {
                     </button>
                 </div>
             </div>
-
         </>
     );
 }
