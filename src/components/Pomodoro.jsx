@@ -6,6 +6,7 @@ export default function Pomodoro() {
     const [currentTime, setCurrentTime] = useState(0);
     const [timerRunning, setTimerRunning] = useState(false);
     const [onBreak, setOnBreak] = useState(false);
+    const [sequenceCounter, setSequenceCounter] = useState(1);
 
     useEffect(() => {
         if (!timerRunning) return;
@@ -17,8 +18,7 @@ export default function Pomodoro() {
                         setOnBreak(false);
                         setTimerRunning(false);
                         return;
-                    }
-                    else if (!onBreak) {
+                    } else if (!onBreak) {
                         setCurrentTime(breakTime * 60);
                         setTimerRunning(true);
                         setOnBreak(true);
@@ -35,17 +35,21 @@ export default function Pomodoro() {
 
     const onButtonClickPlus = (event) => {
         if (event.target.value === "breakTimer") {
-            setBreakTime(prev => prev + 1);
+            setBreakTime(prev => Math.max(prev + 1));
         } else if (event.target.value === "workTimer") {
-            setWorkTime(prev => prev + 1);
+            setWorkTime(prev => Math.max(prev + 1));
+        } else if (event.target.value === "sequenceCounter") {
+            setSequenceCounter(prev => Math.max(prev + 1));
         }
     }
 
     const onButtonClickMinus = (event) => {
         if (event.target.value === "breakTimer") {
-            setBreakTime(prev => prev - 1);
+            setBreakTime(prev => Math.max(prev - 1, 0));
         } else if (event.target.value === "workTimer") {
-            setWorkTime(prev => prev - 1);
+            setWorkTime(prev => Math.max(prev - 1, 0));
+        } else if (event.target.value === "sequenceCounter") {
+            setSequenceCounter(prev => Math.max(prev - 1, 0));
         }
     }
 
@@ -75,6 +79,14 @@ export default function Pomodoro() {
                     <button className={"smoothButton roundButton"} value={"breakTimer"} onClick={onButtonClickPlus}>+
                     </button>
                     <button className={"smoothButton roundButton"} value={"breakTimer"} onClick={onButtonClickMinus}>-
+                    </button>
+                </div>
+                <div className={"sequenceCounter"}>
+                    <h1>Sequence</h1>
+                    <p>{sequenceCounter}</p>
+                    <button className={"smoothButton roundButton"} value={"sequenceCounter"} onClick={onButtonClickPlus}>+
+                    </button>
+                    <button className={"smoothButton roundButton"} value={"sequenceCounter"} onClick={onButtonClickMinus}>-
                     </button>
                 </div>
             </div>
