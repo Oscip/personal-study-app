@@ -7,6 +7,9 @@ export default function Pomodoro() {
     const [timerRunning, setTimerRunning] = useState(false);
     const [onBreak, setOnBreak] = useState(false);
     const [sequenceCounter, setSequenceCounter] = useState(1);
+    const [temporaryBreakTime, setTemporaryBreakTime] = useState(0);
+    const [temporaryWorkTime, setTemporaryWorkTime] = useState(0);
+    const [temporarySequenceCounter, setTemporarySequenceCounter] = useState(0);
 
     useEffect(() => {
         if (!timerRunning) return;
@@ -15,13 +18,18 @@ export default function Pomodoro() {
                 if (prev <= 1) {
                     clearInterval(interval);
                     if (onBreak) {
-                        setOnBreak(false);
-                        setTimerRunning(false);
-                        return;
+                        if (temporarySequenceCounter === 0) {
+                            setOnBreak(false);
+                            setTimerRunning(false);
+                        } else {
+                            setTemporarySequenceCounter(prev => prev -1);
+                            return temporaryWorkTime * 60;
+                        }
+
+                        return 0;
                     } else if (!onBreak) {
-                        setCurrentTime(breakTime * 60);
-                        setTimerRunning(true);
                         setOnBreak(true);
+                        return(temporaryBreakTime * 60)
                     }
 
                     return 0;
@@ -54,6 +62,9 @@ export default function Pomodoro() {
     }
 
     const onButtonClickStart = () => {
+        setTemporaryWorkTime(workTime);
+        setTemporaryBreakTime(breakTime);
+        setTemporarySequenceCounter(sequenceCounter);
         setCurrentTime(workTime * 60);
         setTimerRunning(true);
     }
