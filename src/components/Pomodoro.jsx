@@ -1,4 +1,5 @@
 import {useEffect, useState} from "react";
+import {Button} from "@heroui/react";
 
 export default function Pomodoro() {
     const [breakTime, setBreakTime] = useState(5);
@@ -17,6 +18,7 @@ export default function Pomodoro() {
             setCurrentTime(prev => {
                 if (prev <= 1) {
                     clearInterval(interval);
+                    /* Break been used */
                     if (onBreak) {
                         if (temporarySequenceCounter === 0) {
                             setOnBreak(false);
@@ -25,9 +27,10 @@ export default function Pomodoro() {
                             setTemporarySequenceCounter(prev => prev -1);
                             return temporaryWorkTime * 60;
                         }
-
                         return 0;
-                    } else if (!onBreak) {
+                    }
+                    /* Break has not been used */
+                    else if (!onBreak) {
                         setOnBreak(true);
                         return(temporaryBreakTime * 60)
                     }
@@ -67,6 +70,23 @@ export default function Pomodoro() {
         setTemporarySequenceCounter(sequenceCounter);
         setCurrentTime(workTime * 60);
         setTimerRunning(true);
+        /* Create div */
+        const div = document.getElementsByClassName("timerShower")[0];
+        /* Create Stop Button */
+        const button = document.createElement("button");
+        button.id = "stopButton"
+        button.className = "smoothButton roundButton";
+        button.innerText = "Stop"
+        button.onclick = onButtonClickStop;
+        /* Configurations */
+        div.appendChild(button);
+
+    }
+
+    const onButtonClickStop = () => {
+        const button = document.getElementById("stopButton");
+        button.remove();
+        setTimerRunning(false);
     }
 
     return (
